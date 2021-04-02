@@ -2,11 +2,13 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
-  BaseClientSideWebPart,
-  IPropertyPaneConfiguration,
-  PropertyPaneCheckbox,
-  PropertyPaneToggle
+  BaseClientSideWebPart
 } from '@microsoft/sp-webpart-base';
+import { 
+  IPropertyPaneConfiguration, 
+  PropertyPaneCheckbox, 
+  PropertyPaneToggle 
+} from "@microsoft/sp-property-pane";
 
 import * as strings from 'TableOfContentsWebPartStrings';
 import TableOfContents from './components/TableOfContents';
