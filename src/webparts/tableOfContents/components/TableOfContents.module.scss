@@ -15,6 +15,10 @@
     }
   }
 
+  li::marker {
+    color: "[theme: themePrimary, default: #0078d7]";
+  }
+  
   // hide on medium screens and smaller
   .hideInMobileView {
     @include ms-screen-lg-down {
