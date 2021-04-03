@@ -1,9 +1,14 @@
 declare interface ITableOfContentsWebPartStrings {
-  PropertyPaneDescription: string;
-  ShowHeading1FieldLabel: string;
-  ShowHeading2FieldLabel: string;
-  ShowHeading3FieldLabel: string;
-  HideInMobileViewLabel: string;
+  propertyPaneDescription: string;
+  showHeading1FieldLabel: string;
+  showHeading2FieldLabel: string;
+  showHeading3FieldLabel: string;
+  showPreviousPageViewLabel: string;
+  previousPageFieldLabel: string;
+  previousPageFieldDescription: string;
+  previousPageDefaultValue: string;
+  hideInMobileViewLabel: string;
+  errorToggleFieldEmpty: string;
 }
 
 declare module 'TableOfContentsWebPartStrings' {

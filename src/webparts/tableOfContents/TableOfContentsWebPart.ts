@@ -7,7 +7,8 @@ import {
 import { 
   IPropertyPaneConfiguration, 
   PropertyPaneCheckbox, 
-  PropertyPaneToggle 
+  PropertyPaneToggle,
+  PropertyPaneTextField
 } from "@microsoft/sp-property-pane";
 
 import * as strings from 'TableOfContentsWebPartStrings';
@@ -19,7 +20,10 @@ export interface ITableOfContentsWebPartProps {
   showHeading1: boolean;
   showHeading2: boolean;
   showHeading3: boolean;
+  showPreviousPageLink: boolean;
+  previousPageText: string;
   hideInMobileView: boolean;
+  historyCount: number;
 }
 
 export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITableOfContentsWebPartProps> {
@@ -34,6 +38,9 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
         showHeading2: this.properties.showHeading1,
         showHeading3: this.properties.showHeading2,
         showHeading4: this.properties.showHeading3,
+
+        showPreviousPageLink: this.properties.showPreviousPageLink,
+        previousPageText: this.properties.previousPageText,
 
         hideInMobileView: this.properties.hideInMobileView,
       }
@@ -62,26 +69,40 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription
+            description: strings.propertyPaneDescription
           },
           groups: [
             {
               groupFields: [
                 PropertyPaneCheckbox('showHeading1', {
-                  text: strings.ShowHeading1FieldLabel
+                  text: strings.showHeading1FieldLabel
                 }),
                 PropertyPaneCheckbox('showHeading2', {
-                  text: strings.ShowHeading2FieldLabel
+                  text: strings.showHeading2FieldLabel
                 }),
                 PropertyPaneCheckbox('showHeading3', {
-                  text: strings.ShowHeading3FieldLabel
+                  text: strings.showHeading3FieldLabel
+                })
+              ]
+            },
+            {
+              groupFields: [
+                PropertyPaneToggle('showPreviousPageLink', {
+                  label: strings.showPreviousPageViewLabel
+                }),
+                PropertyPaneTextField('previousPageText', {
+                  //label: strings.PreviousPageFieldLabel,
+                  description: strings.previousPageFieldDescription,
+                  disabled: !this.properties.showPreviousPageLink,
+                  onGetErrorMessage: this.checkToggleField,
+                  value: strings.previousPageDefaultValue
                 })
               ]
             },
             {
               groupFields: [
                 PropertyPaneToggle('hideInMobileView', {
-                  label: strings.HideInMobileViewLabel
+                  label: strings.hideInMobileViewLabel
                 })
               ]
             }
@@ -90,4 +111,14 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
       ]
     };
   }
+
+  private checkToggleField = (value: string): string => {
+    if (value === ""){
+      return strings.errorToggleFieldEmpty;
+    }
+    else {
+      return "";
+    }
+  }
+
 }

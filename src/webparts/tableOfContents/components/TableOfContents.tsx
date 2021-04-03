@@ -3,6 +3,9 @@ import { WebPartTitle } from "@pnp/spfx-controls-react/lib/WebPartTitle";
 
 import styles from './TableOfContents.module.scss';
 import { ITableOfContentsProps } from './ITableOfContentsProps';
+import { ITableOfContentsState } from './ITableOfContentsState';
+import { escape } from '@microsoft/sp-lodash-subset';
+import * as strings from "TableOfContentsWebPartStrings";
 
 /**
  * Describes a link for a header
@@ -22,12 +25,23 @@ interface Link {
   parent: Link | undefined;
 }
 
-export default class TableOfContents extends React.Component<ITableOfContentsProps, {}> {
+export default class TableOfContents extends React.Component<ITableOfContentsProps, ITableOfContentsState> {
   private static timeout = 500;
 
   private static h2Tag = "h2";
   private static h3Tag = "h3";
   private static h4Tag = "h4";
+
+  /**
+   * Create a state for the history count. 
+   * This is required to make sure we go back to the correct page when the back to previous page link is clicked.
+   */
+     constructor(props: ITableOfContentsProps){
+      super(props);
+      this.state = {
+        historyCount: -1
+      };
+    }
 
   /**
    * Gets a nested list of links based on the list of headers specified.
@@ -185,6 +199,9 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
   */
   private scrollToHeader = (target: HTMLElement) => {
     return (event: React.SyntheticEvent) => {
+      //decrement the history count to allow the return to previous page to work correctly
+      var temp = this.state.historyCount -1;
+      this.setState({historyCount: temp});
       event.preventDefault();
       document.location.hash = target.id;
       target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
@@ -221,6 +238,28 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     }, TableOfContents.timeout);
   }
 
+    /**
+   * Event for the back to previous page link. 
+   * It uses the history count to work out how many pages to go back, as each click to a header results in history
+   */
+     public backToPreviousPage(){
+      window.history.go(this.state.historyCount);
+    }
+  
+    /**
+     * Render the back to previous link
+     */
+    private renderBackToPreviousLink = (): JSX.Element => {
+      if (this.props.showPreviousPageLink){
+        return (
+          <div className={styles.backItem} ><ul><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText.trim() === "" ? strings.previousPageDefaultValue : escape(this.props.previousPageText)}</a></li></ul></div>
+        );
+      }
+      else {
+        return null;
+      }
+    }
+
   public render(): JSX.Element {
     // get headers, then filter out empty and headers from <aside> tags
     const querySelector = this.getQuerySelector(this.props);
@@ -229,6 +268,8 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     const links = this.getLinks(headers);
     // create components from a list of links
     const toc = (<ul>{this.renderLinks(links)}</ul>);
+    // create previous page link
+    const previousPage = (this.renderBackToPreviousLink());
     // add CSS class to hide in mobile view if needed
     const hideInMobileViewClass = this.props.hideInMobileView ? (styles.hideInMobileView) : '';
 
@@ -240,6 +281,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
             updateProperty={this.props.updateProperty} />
           <nav>
             {toc}
+            {previousPage}
           </nav>
         </div>
       </section>

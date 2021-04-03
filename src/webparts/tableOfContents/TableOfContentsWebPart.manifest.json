@@ -16,14 +16,22 @@
 
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
-    "group": { "default": "Other" },
-    "title": { "default": "Table of Contents" },
-    "description": { "default": "Table of contents for a page" },
+    "group": { 
+      "default": "Other" 
+    },
+    "title": { 
+      "default": "Table of Contents" 
+    },
+    "description": { 
+      "default": "Table of contents for a page" 
+    },
     "officeFabricIconFontName": "GroupedList",
     "properties": {
       "showHeading1": true,
       "showHeading2": true,
       "showHeading3": true,
+      "showPreviousPageLink": false,
+      "previousPageText": "Return to previous page",
       "hideInMobileView": false
     }
   }]

@@ -9,5 +9,8 @@ export interface ITableOfContentsProps {
   showHeading3: boolean;
   showHeading4: boolean;
 
+  showPreviousPageLink: boolean;
+  previousPageText: string;
+  
   hideInMobileView: boolean;
 }
