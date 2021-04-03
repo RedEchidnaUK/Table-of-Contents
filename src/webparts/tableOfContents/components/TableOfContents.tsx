@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { WebPartTitle } from "@pnp/spfx-controls-react/lib/WebPartTitle";
-
 import styles from './TableOfContents.module.scss';
 import { ITableOfContentsProps } from './ITableOfContentsProps';
 import { ITableOfContentsState } from './ITableOfContentsState';
@@ -36,12 +34,12 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Create a state for the history count. 
    * This is required to make sure we go back to the correct page when the back to previous page link is clicked.
    */
-     constructor(props: ITableOfContentsProps){
-      super(props);
-      this.state = {
-        historyCount: -1
-      };
-    }
+  constructor(props: ITableOfContentsProps) {
+    super(props);
+    this.state = {
+      historyCount: -1
+    };
+  }
 
   /**
    * Gets a nested list of links based on the list of headers specified.
@@ -126,7 +124,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
 
   /**
    * Returns html elements in the current page specified by the query selector.
-  */
+   */
   private getHtmlElements(querySelector: string): HTMLElement[] {
     if (querySelector.length === 0) {
       return [];
@@ -195,13 +193,27 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
   }
 
   /**
+   * Filters elements that have the data attrribute of 'data-toc-ignore' and thus should be ignored.
+   * @param element
+   */
+  private filterTocIgnore(element: HTMLElement): boolean {
+    let isToCIgnore = false;
+
+    if (element.getAttribute("data-toc-ignore")) {
+      isToCIgnore = true;
+    }
+
+    return !isToCIgnore;
+  }
+
+  /**
    * Returns a click handler that scrolls a page to the specified element.
-  */
+   */
   private scrollToHeader = (target: HTMLElement) => {
     return (event: React.SyntheticEvent) => {
       //decrement the history count to allow the return to previous page to work correctly
-      var temp = this.state.historyCount -1;
-      this.setState({historyCount: temp});
+      var temp = this.state.historyCount - 1;
+      this.setState({ historyCount: temp });
       event.preventDefault();
       document.location.hash = target.id;
       target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
@@ -238,45 +250,44 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     }, TableOfContents.timeout);
   }
 
-    /**
+  /**
    * Event for the back to previous page link. 
    * It uses the history count to work out how many pages to go back, as each click to a header results in history
    */
-     public backToPreviousPage(){
-      window.history.go(this.state.historyCount);
+  public backToPreviousPage() {
+    window.history.go(this.state.historyCount);
+  }
+
+  /**
+   * Render the back to previous link
+   */
+  private renderBackToPreviousLink = (): JSX.Element => {
+    if (this.props.showPreviousPageLink) {
+      return (
+        <div className={styles.backItem} ><ul><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText.trim() !== "" ? escape(this.props.previousPageText) : strings.previousPageDefaultValue}</a></li></ul></div>
+      );
     }
-  
-    /**
-     * Render the back to previous link
-     */
-    private renderBackToPreviousLink = (): JSX.Element => {
-      if (this.props.showPreviousPageLink){
-        return (
-          <div className={styles.backItem} ><ul><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText.trim() === "" ? strings.previousPageDefaultValue : escape(this.props.previousPageText)}</a></li></ul></div>
-        );
-      }
-      else {
-        return null;
-      }
+    else {
+      return null;
     }
+  }
 
   /**
    * Modify the CSS of the appropriate HTML elements based on the wepart ID to enable sticky mode.
    * This does involve modifying HTML elements outside of the webpart, so may well break in the furture if Microsoft change their HTML\CSS etc.
    */
+  private configureSticky() {
 
-  private configureSticky(){
-
-    var HTMLElementSticky : HTMLElement = document.querySelector("[id='"+ this.props.webpartId +"']");
+    var HTMLElementSticky: HTMLElement = document.querySelector("[id='" + this.props.webpartId + "']");
     if (HTMLElementSticky != null) {
-      if (this.props.enableStickyMode){
+      if (this.props.enableStickyMode) {
 
         HTMLElementSticky.classList.add(styles.sticky);
         HTMLElementSticky.parentElement.parentElement.classList.add(styles.height100pc);
-  
+
       }
       else {
-      
+
         HTMLElementSticky.classList.remove(styles.sticky);
         HTMLElementSticky.parentElement.parentElement.classList.remove(styles.height100pc);
       }
@@ -286,7 +297,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
   public render(): JSX.Element {
     // get headers, then filter out empty and headers from <aside> tags
     const querySelector = this.getQuerySelector(this.props);
-    const headers = this.getHtmlElements(querySelector).filter(this.filterEmpty).filter(this.filterAside);
+    const headers = this.getHtmlElements(querySelector).filter(this.filterEmpty).filter(this.filterAside).filter(this.filterTocIgnore);
     // create a list of links from headers
     const links = this.getLinks(headers);
     // create components from a list of links
@@ -295,16 +306,20 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     const previousPage = (this.renderBackToPreviousLink());
     // add CSS class to hide in mobile view if needed
     const hideInMobileViewClass = this.props.hideInMobileView ? (styles.hideInMobileView) : '';
-    //set Sticky parameters
+    // add CSS class to hide title if requested
+    const titleClass = this.props.hideTitle ? (styles.hideTitle) : "cke_editable h2 " + styles.title;
+    // set title text
+    const titleText = this.props.titleText ? this.props.titleText : strings.titleDefaultValue;
+    // set Sticky parameters
     this.configureSticky();
 
     return (
       <section className={styles.tableOfContents}>
         <div className={hideInMobileViewClass}>
-          <WebPartTitle displayMode={this.props.displayMode}
-            title={this.props.title}
-            updateProperty={this.props.updateProperty} />
           <nav>
+            <div className={titleClass}>
+              <h2 data-toc-ignore="true">{escape(titleText)}</h2>
+            </div>
             {toc}
             {previousPage}
           </nav>

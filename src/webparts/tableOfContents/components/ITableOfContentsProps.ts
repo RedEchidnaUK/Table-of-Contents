@@ -1,10 +1,13 @@
 import { DisplayMode } from "@microsoft/sp-core-library";
 
 export interface ITableOfContentsProps {
-  title: string;
+  /*title: string;
   displayMode: DisplayMode;
-  updateProperty: (value: string) => void;
+  updateProperty: (value: string) => void;*/
 
+  hideTitle: boolean;
+  titleText: string;
+  
   showHeading2: boolean;
   showHeading3: boolean;
   showHeading4: boolean;
@@ -15,6 +18,5 @@ export interface ITableOfContentsProps {
   enableStickyMode: boolean;
   webpartId: string;
 
-  hideInMobileView: boolean;
-
+  hideInMobileView: boolean; 
 }

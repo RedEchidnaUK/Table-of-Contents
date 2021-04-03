@@ -30,6 +30,14 @@
       display: none !important;
     }
   }
+  
+  .title {
+    min-height: auto;
+  }
+  
+  .hideTitle {
+    display: none !important;
+  }
 }
 
 .sticky {

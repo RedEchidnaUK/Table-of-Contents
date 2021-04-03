@@ -5,6 +5,34 @@
    */
   "version": "0.2.0",
   "configurations": [{
+    "name": "SPFx Edge",
+    "type": "edge",
+    "request": "launch",
+    "url": "https://localhost:4321/temp/workbench.html",
+    "webRoot": "${workspaceRoot}",
+    "sourceMaps": true,
+    "sourceMapPathOverrides": {
+      "webpack:///.././src/*": "${webRoot}/src/*",
+      "webpack:///../../../src/*": "${webRoot}/src/*",
+      "webpack:///../../../../src/*": "${webRoot}/src/*",
+      "webpack:///../../../../../src/*": "${webRoot}/src/*"
+    }
+  },
+  {
+    "name": "SPFx hosted Edge",
+    "type": "edge",
+    "request": "launch",
+    "url": "https://fourteenthelement.sharepoint.com/_layouts/workbench.aspx",
+    "webRoot": "${workspaceRoot}",
+    "sourceMaps": true,
+    "sourceMapPathOverrides": {
+      "webpack:///.././src/*": "${webRoot}/src/*",
+      "webpack:///../../../src/*": "${webRoot}/src/*",
+      "webpack:///../../../../src/*": "${webRoot}/src/*",
+      "webpack:///../../../../../src/*": "${webRoot}/src/*"
+    }
+  },
+  {
       "name": "Local workbench",
       "type": "chrome",
       "request": "launch",

@@ -1,5 +1,8 @@
 declare interface ITableOfContentsWebPartStrings {
   propertyPaneDescription: string;
+  titleDefaultValue: string;
+  titleFieldDescription: string;
+  hideTitleFieldLabel: string;
   showHeading1FieldLabel: string;
   showHeading2FieldLabel: string;
   showHeading3FieldLabel: string;

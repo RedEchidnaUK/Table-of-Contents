@@ -17,7 +17,9 @@ import TableOfContents from './components/TableOfContents';
 import { ITableOfContentsProps } from './components/ITableOfContentsProps';
 
 export interface ITableOfContentsWebPartProps {
-  title: string;
+  //title: string;
+  hideTitle: boolean;
+  titleText: string;
   showHeading1: boolean;
   showHeading2: boolean;
   showHeading3: boolean;
@@ -26,6 +28,7 @@ export interface ITableOfContentsWebPartProps {
   historyCount: number;
   enableStickyMode: boolean;
   hideInMobileView: boolean;
+  
 }
 
 export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITableOfContentsWebPartProps> {
@@ -33,9 +36,12 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
     const element: React.ReactElement<ITableOfContentsProps> = React.createElement(
       TableOfContents,
       {
-        title: this.properties.title,
-        displayMode: this.displayMode,
-        updateProperty: this.handleUpdateProperty,
+        //title: this.properties.title,
+        //displayMode: this.displayMode,
+        //updateProperty: this.handleUpdateProperty,
+
+        hideTitle: this.properties.hideTitle,
+        titleText: this.properties.titleText,
 
         showHeading2: this.properties.showHeading1,
         showHeading3: this.properties.showHeading2,
@@ -57,9 +63,9 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
   /**
    * Saves new value for the title property.
    */
-  private handleUpdateProperty = (newValue: string) => {
+  /*private handleUpdateProperty = (newValue: string) => {
     this.properties.title = newValue;
-  }
+  }*/
 
   protected onDispose(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
@@ -75,8 +81,22 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
         {
           header: {
             description: strings.propertyPaneDescription
+
           },
           groups: [
+            {
+              groupFields: [
+                PropertyPaneToggle('hideTitle', {
+                  label: strings.hideTitleFieldLabel
+                }),
+                PropertyPaneTextField('titleText', {
+                  description: strings.titleFieldDescription,
+                  disabled: this.properties.hideTitle,
+                  onGetErrorMessage: this.checkToggleField,
+                  value: strings.titleDefaultValue
+                })
+              ]
+            },
             {
               groupFields: [
                 PropertyPaneCheckbox('showHeading1', {
@@ -96,7 +116,6 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
                   label: strings.showPreviousPageViewLabel
                 }),
                 PropertyPaneTextField('previousPageText', {
-                  //label: strings.PreviousPageFieldLabel,
                   description: strings.previousPageFieldDescription,
                   disabled: !this.properties.showPreviousPageLink,
                   onGetErrorMessage: this.checkToggleField,
