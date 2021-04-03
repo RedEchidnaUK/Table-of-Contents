@@ -1,21 +1,21 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
-  "solution": {
-    "name": "Table of Contents Web Part",
-    "id": "3bae0d7e-1b34-417a-b548-b2fe4108d839",
-    "version": "1.0.0.0",
-    "includeClientSideAssets": true,
-    "skipFeatureDeployment": false,
-    "isDomainIsolated": false,
-    "developer": {
-      "name": "Contoso",
-      "privacyUrl": "https://contoso.com/privacy",
-      "termsOfUseUrl": "https://contoso.com/terms-of-use",
-      "websiteUrl": "https://contoso.com/my-app",
-      "mpnId": "000000"
+    "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+    "solution": {
+        "name": "Table of Contents Web Part",
+        "id": "3bae0d7e-1b34-417a-b548-b2fe4108d839",
+        "version": "1.0.0.0",
+        "includeClientSideAssets": true,
+        "skipFeatureDeployment": false,
+        "isDomainIsolated": false,
+        "developer": {
+            "name": "Red Echidna UK",
+            "websiteUrl": "https://github.com/RedEchidnaUK/Code-Snippet-Plus-Plus",
+            "privacyUrl": "https://github.com/RedEchidnaUK/Code-Snippet-Plus-Plus",
+            "termsOfUseUrl": "https://github.com/RedEchidnaUK/Code-Snippet-Plus-Plus",
+            "mpnId": "000000"
+        }
+    },
+    "paths": {
+        "zippedPackage": "solution/table-of-contents.sppkg"
     }
-  },
-  "paths": {
-    "zippedPackage": "solution/table-of-contents.sppkg"
-  }
 }
