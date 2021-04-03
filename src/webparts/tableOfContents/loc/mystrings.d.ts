@@ -7,6 +7,8 @@ declare interface ITableOfContentsWebPartStrings {
   previousPageFieldLabel: string;
   previousPageFieldDescription: string;
   previousPageDefaultValue: string;
+  enableStickyModeLabel: string;
+  enableStickyModeDescription: string;
   hideInMobileViewLabel: string;
   errorToggleFieldEmpty: string;
 }

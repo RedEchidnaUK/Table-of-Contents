@@ -260,6 +260,29 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
       }
     }
 
+  /**
+   * Modify the CSS of the appropriate HTML elements based on the wepart ID to enable sticky mode.
+   * This does involve modifying HTML elements outside of the webpart, so may well break in the furture if Microsoft change their HTML\CSS etc.
+   */
+
+  private configureSticky(){
+
+    var HTMLElementSticky : HTMLElement = document.querySelector("[id='"+ this.props.webpartId +"']");
+    if (HTMLElementSticky != null) {
+      if (this.props.enableStickyMode){
+
+        HTMLElementSticky.classList.add(styles.sticky);
+        HTMLElementSticky.parentElement.parentElement.classList.add(styles.height100pc);
+  
+      }
+      else {
+      
+        HTMLElementSticky.classList.remove(styles.sticky);
+        HTMLElementSticky.parentElement.parentElement.classList.remove(styles.height100pc);
+      }
+    }
+  }
+
   public render(): JSX.Element {
     // get headers, then filter out empty and headers from <aside> tags
     const querySelector = this.getQuerySelector(this.props);
@@ -272,6 +295,8 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     const previousPage = (this.renderBackToPreviousLink());
     // add CSS class to hide in mobile view if needed
     const hideInMobileViewClass = this.props.hideInMobileView ? (styles.hideInMobileView) : '';
+    //set Sticky parameters
+    this.configureSticky();
 
     return (
       <section className={styles.tableOfContents}>

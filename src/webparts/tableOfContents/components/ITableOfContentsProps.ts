@@ -12,5 +12,9 @@ export interface ITableOfContentsProps {
   showPreviousPageLink: boolean;
   previousPageText: string;
   
+  enableStickyMode: boolean;
+  webpartId: string;
+
   hideInMobileView: boolean;
+
 }

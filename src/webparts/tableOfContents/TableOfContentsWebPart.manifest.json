@@ -32,7 +32,8 @@
       "showHeading3": true,
       "showPreviousPageLink": false,
       "previousPageText": "Return to previous page",
-      "hideInMobileView": false
+      "hideInMobileView": false,
+      "enableStickyMode": false
     }
   }]
 }

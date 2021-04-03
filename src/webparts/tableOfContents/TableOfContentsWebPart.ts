@@ -6,9 +6,10 @@ import {
 } from '@microsoft/sp-webpart-base';
 import { 
   IPropertyPaneConfiguration, 
-  PropertyPaneCheckbox, 
+  PropertyPaneCheckbox,
   PropertyPaneToggle,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneLabel
 } from "@microsoft/sp-property-pane";
 
 import * as strings from 'TableOfContentsWebPartStrings';
@@ -22,8 +23,9 @@ export interface ITableOfContentsWebPartProps {
   showHeading3: boolean;
   showPreviousPageLink: boolean;
   previousPageText: string;
-  hideInMobileView: boolean;
   historyCount: number;
+  enableStickyMode: boolean;
+  hideInMobileView: boolean;
 }
 
 export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITableOfContentsWebPartProps> {
@@ -41,6 +43,9 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
 
         showPreviousPageLink: this.properties.showPreviousPageLink,
         previousPageText: this.properties.previousPageText,
+
+        enableStickyMode: this.properties.enableStickyMode,
+        webpartId: this.context.instanceId,
 
         hideInMobileView: this.properties.hideInMobileView,
       }
@@ -101,6 +106,12 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
             },
             {
               groupFields: [
+                PropertyPaneToggle('enableStickyMode', {
+                  label: strings.enableStickyModeLabel
+                }),
+                PropertyPaneLabel('enabldeStickyModeDescription', {
+                  text: strings.enableStickyModeDescription
+                }),
                 PropertyPaneToggle('hideInMobileView', {
                   label: strings.hideInMobileViewLabel
                 })

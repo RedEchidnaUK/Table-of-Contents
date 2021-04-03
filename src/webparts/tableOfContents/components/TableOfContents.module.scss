@@ -31,3 +31,15 @@
     }
   }
 }
+
+.sticky {
+  @include ms-screen-xl-up {
+    position: sticky;
+    top: 0px;
+  }
+}
+.height100pc {
+  @include ms-screen-xl-up {
+    height: 100%;
+  }
+}
