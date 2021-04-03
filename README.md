@@ -22,6 +22,11 @@ The web part provides the following properties:
 *This mode will not work correctly on the local workbench, only the live site. It should also be used with caution as it works by manipulating Microsoft's styles on the containing element, so it may stop working if Microsoft change their code, you have been warned!
 
 ## Minimal Path to Awesome
+### Pre-built package
+You can grab the pre-built package ready for deployment from [./release/table-of-contents.sppkg](https://github.com/redechidnauk/table-of-contents/blob/master/table-of-contents/release/table-of-contents.sppkg).
+
+Here's how to deploy the web part to the site collection's app catalog:
+![deploying to site app catalog](./assets/table-of-contents-deploy-to-site-app-catalog.gif)
 
 ### Local testing
 - Clone this repository
