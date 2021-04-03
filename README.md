@@ -23,7 +23,7 @@ The web part provides the following properties:
 
 ## Minimal Path to Awesome
 ### Pre-built package
-You can grab the pre-built package ready for deployment from [./release/table-of-contents.sppkg](https://github.com/redechidnauk/table-of-contents/blob/master/table-of-contents/release/table-of-contents.sppkg).
+You can grab the pre-built package ready for deployment from [./release/table-of-contents.sppkg](https://github.com/RedEchidnaUK/Table-of-Contents/blob/master/release/table-of-contents.sppkg).
 
 Here's how to deploy the web part to the site collection's app catalog:
 ![deploying to site app catalog](./assets/table-of-contents-deploy-to-site-app-catalog.gif)
