@@ -197,13 +197,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * @param element
    */
   private filterTocIgnore(element: HTMLElement): boolean {
-    let isToCIgnore = false;
-
-    if (element.getAttribute("data-toc-ignore")) {
-      isToCIgnore = true;
-    }
-
-    return !isToCIgnore;
+    return !(element.getAttribute("data-toc-ignore"));
   }
 
   /**
