@@ -258,7 +258,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
   private renderBackToPreviousLink = (): JSX.Element => {
     if (this.props.showPreviousPageLink) {
       return (
-        <div className={styles.backItem} ><ul><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText.trim() !== "" ? escape(this.props.previousPageText) : strings.previousPageDefaultValue}</a></li></ul></div>
+        <div className={styles.backItem} ><ul><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText ? this.props.previousPageText : strings.previousPageDefaultValue}</a></li></ul></div>
       );
     }
     else {

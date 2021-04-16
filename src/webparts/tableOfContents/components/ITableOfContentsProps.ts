@@ -1,9 +1,4 @@
-import { DisplayMode } from "@microsoft/sp-core-library";
-
 export interface ITableOfContentsProps {
-  /*title: string;
-  displayMode: DisplayMode;
-  updateProperty: (value: string) => void;*/
 
   hideTitle: boolean;
   titleText: string;
