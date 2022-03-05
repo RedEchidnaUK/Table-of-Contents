@@ -30,7 +30,7 @@ let syncVersionsSubtask = build.subTask('version-sync', function (gulp, buildOpt
     if (pkgSolution.solution.version !== newVersionNumber) {
         // assign newly generated version number to web part version
         pkgSolution.solution.version = newVersionNumber;
-
+        pkgSolution.solution.features.version = newVersionNumber;
         // log new version
         this.log('New package-solution.json version:\t' + pkgSolution.solution.version);
 
@@ -47,5 +47,12 @@ let syncVersionsSubtask = build.subTask('version-sync', function (gulp, buildOpt
 });
 let syncVersionTask = build.task('version-sync', syncVersionsSubtask);
 build.rig.addPreBuildTask(syncVersionTask);
+var getTasks = build.rig.getTasks;
+build.rig.getTasks = function () {
+  var result = getTasks.call(build.rig);
 
+  result.set('serve', result.get('serve-deprecated'));
+
+  return result;
+};
 build.initialize(gulp);

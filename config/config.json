@@ -13,7 +13,6 @@
   },
   "externals": {},
   "localizedResources": {
-    "TableOfContentsWebPartStrings": "lib/webparts/tableOfContents/loc/{locale}.js",
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+    "TableOfContentsWebPartStrings": "lib/webparts/tableOfContents/loc/{locale}.js"
   }
 }
