@@ -32,10 +32,12 @@ export interface ITableOfContentsWebPartProps {
 }
 
 export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITableOfContentsWebPartProps> {
+
   public render(): void {
     const element: React.ReactElement<ITableOfContentsProps> = React.createElement(
       TableOfContents,
       {
+
         //title: this.properties.title,
         //displayMode: this.displayMode,
         //updateProperty: this.handleUpdateProperty,

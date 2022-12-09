@@ -146,18 +146,23 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    */
   private getQuerySelector(props: ITableOfContentsProps) {
     const queryParts = [];
-    const textBoxClass = '.cke_editable';
+    
+    const textBoxClass = '.cke_editable'; //original
+    const textBoxClassSection = '.Collapsible';
 
     if (props.showHeading2) {
       queryParts.push(textBoxClass + " " + TableOfContents.h2Tag);
+      queryParts.push(textBoxClassSection + " " + TableOfContents.h2Tag);
     }
 
     if (props.showHeading3) {
       queryParts.push(textBoxClass + " " + TableOfContents.h3Tag);
+      queryParts.push(textBoxClassSection + " " + TableOfContents.h3Tag);
     }
 
     if (props.showHeading4) {
       queryParts.push(textBoxClass + " " + TableOfContents.h4Tag);
+      queryParts.push(textBoxClassSection + " " + TableOfContents.h4Tag);
     }
 
     return queryParts.join(',');
