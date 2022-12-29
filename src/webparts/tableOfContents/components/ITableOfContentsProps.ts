@@ -14,4 +14,5 @@ export interface ITableOfContentsProps {
   webpartId: string;
 
   hideInMobileView: boolean; 
+
 }
