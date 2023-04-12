@@ -211,7 +211,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
   private scrollToHeader = (target: HTMLElement) => {
     return (event: React.SyntheticEvent) => {
       //decrement the history count to allow the return to previous page to work correctly
-      var temp = this.state.historyCount - 1;
+      const temp = this.state.historyCount - 1;
       this.setState({ historyCount: temp });
       event.preventDefault();
       document.location.hash = target.id;
@@ -277,7 +277,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    */
   private configureSticky() {
 
-    var HTMLElementSticky: HTMLElement = document.querySelector("[id='" + this.props.webpartId + "']");
+    const HTMLElementSticky: HTMLElement = document.querySelector("[id='" + this.props.webpartId + "']");
     if (HTMLElementSticky != null) {
       if (this.props.enableStickyMode) {
 
