@@ -4,13 +4,18 @@ import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart
 } from '@microsoft/sp-webpart-base';
-import { 
-  IPropertyPaneConfiguration, 
+import {
+  IPropertyPaneConfiguration,
   PropertyPaneCheckbox,
   PropertyPaneToggle,
   PropertyPaneTextField,
   PropertyPaneLabel
 } from "@microsoft/sp-property-pane";
+import {
+  ThemeProvider,
+  ThemeChangedEventArgs,
+  IReadonlyTheme
+} from '@microsoft/sp-component-base';
 
 import * as strings from 'TableOfContentsWebPartStrings';
 import TableOfContents from './components/TableOfContents';
@@ -28,19 +33,52 @@ export interface ITableOfContentsWebPartProps {
   historyCount: number;
   enableStickyMode: boolean;
   hideInMobileView: boolean;
-  
+
 }
 
 export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITableOfContentsWebPartProps> {
+
+  private _themeProvider: ThemeProvider;
+  private _themeVariant: IReadonlyTheme | undefined;
+
+  protected onInit(): Promise<void> {
+    // Consume the ThemeProvider service
+    this._themeProvider = this.context.serviceScope.consume(ThemeProvider.serviceKey);
+    // If it exists, get the theme variant
+    this._themeVariant = this._themeProvider.tryGetTheme();
+    this.setCSSVariables(this._themeVariant.semanticColors);
+    // Register a handler to be notified if the theme variant changes
+    this._themeProvider.themeChangedEvent.add(this, this._handleThemeChangedEvent);
+    return super.onInit();
+  }
+
+  private setCSSVariables(theming: any): any {
+    if (!theming) { return null; }
+    let themingKeys = Object.keys(theming);
+    if (themingKeys !== null) {
+      themingKeys.forEach(key => {
+        this.domElement.style.setProperty(`--${key}`, theming[key]);
+      });
+    }
+  }
+
+  /**
+ * Update the current theme variant reference and re-render.
+ *
+ * @param args The new theme
+ */
+  private _handleThemeChangedEvent(args: ThemeChangedEventArgs): void {
+    this._themeVariant = args.theme;
+    this.setCSSVariables(this._themeVariant.semanticColors);
+    this.render();
+  }
 
   public render(): void {
     const element: React.ReactElement<ITableOfContentsProps> = React.createElement(
       TableOfContents,
       {
 
-        //title: this.properties.title,
-        //displayMode: this.displayMode,
-        //updateProperty: this.handleUpdateProperty,
+        themeVariant: this._themeVariant,
 
         hideTitle: this.properties.hideTitle,
         titleText: this.properties.titleText,
@@ -145,7 +183,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
   }
 
   private checkToggleField = (value: string): string => {
-    if (value === ""){
+    if (value === "") {
       return strings.errorToggleFieldEmpty;
     }
     else {

@@ -4,7 +4,7 @@
   "alias": "TableOfContentsWebPart",
   "componentType": "WebPart",
 
-  // Hintergrund Themes
+  // Support Themes
   "supportsThemeVariants": true,
 
   // The "*" signifies that the version should be taken from the package.json

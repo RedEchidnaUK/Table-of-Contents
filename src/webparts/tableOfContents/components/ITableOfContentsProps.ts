@@ -1,3 +1,5 @@
+import { IReadonlyTheme } from '@microsoft/sp-component-base';
+
 export interface ITableOfContentsProps {
 
   hideTitle: boolean;
@@ -15,4 +17,5 @@ export interface ITableOfContentsProps {
 
   hideInMobileView: boolean; 
 
+  themeVariant: IReadonlyTheme | undefined;
 }

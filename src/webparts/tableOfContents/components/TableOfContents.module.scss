@@ -2,26 +2,30 @@
 
 .tableOfContents {
 
+  background-color: var(--bodyBackground);
+
   a {
-    color: "[theme: accent, default: #0078d7]";
+    color: var(--actionLink);
     text-decoration: none;
 
     &:hover {
+      color: var(--actionLink);
       text-decoration: underline;
     }
 
     &:visited {
-      color: "[theme: accent, default: #0078d7]";
+      color: var(--actionLink);
     }
   }
 
   li::marker {
-    color: "[theme: themePrimary, default: #0078d7]";
+    color: var(--primaryButtonBackground);
   }
-  
-  .backItem{
-    border-top:1px solid #f1f1f1;
-    border-bottom:1px solid #f1f1f1;
+
+  .backItem {
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: var(--actionLink);
   }
 
   // hide on medium screens and smaller
@@ -30,11 +34,11 @@
       display: none !important;
     }
   }
-  
+
   .title {
     min-height: auto;
   }
-  
+
   .hideTitle {
     display: none !important;
   }
@@ -46,6 +50,7 @@
     top: 0px;
   }
 }
+
 .height100pc {
   @include ms-screen-xl-up {
     height: 100%;
