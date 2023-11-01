@@ -19,7 +19,7 @@ The web part provides the following properties:
 - `Enable 'Sticky Mode'`&thinsp;&mdash;&thinsp;Makes the table of contents 'stick' to where it was on the screen when a long page is scrolled*.
 - `Hide on small mobile devices`&thinsp;&mdash;&thinsp;whether to hide the web part on small screens.
 
-*This mode will not work correctly on the local workbench, only the live site. It should also be used with caution as it works by manipulating Microsoft's styles on the containing element, so it may stop working if Microsoft change their code, you have been warned!
+*This mode will not work correctly on the local workbench, only the live site. It should also be used with caution as it works by manipulating Microsoft's styles on the containing element, so it may stop working if Microsoft change their code, you have been warned! When used with this mode, it is best to place the Table of Contents in a 'vertical section' as this covers the full length of a page.
 
 ## Minimal Path to Awesome
 ### Pre-built package
