@@ -32,3 +32,6 @@ obj
 *.scss.ts
 
 .heft
+
+# Upgrade Reports
+upgrade-report.md
