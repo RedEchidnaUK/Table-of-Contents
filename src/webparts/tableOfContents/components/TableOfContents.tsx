@@ -224,7 +224,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Creates a list of components to display from a list of links.
    * @param links
    */
-  private renderLinks(links: Link[], listStyle: string): JSX.Element {
+  private renderLinks(links: Link[], listStyle: string): JSX.Element[] {
     // for each link render a <li> element with a link. If the link has got childNodes, additionaly render <ul> with child links.
     const elements = links.map((link, index) => {
       return (
@@ -235,7 +235,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
       );
     });
 
-    return elements[0]; //Not sure what is going on here, but if the array is returned it renders twice while in 'Edit' mode.
+    return elements; 
   }
 
   /**
