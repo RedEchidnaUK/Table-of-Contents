@@ -9,8 +9,10 @@ export interface ITableOfContentsProps {
   showHeading3: boolean;
   showHeading4: boolean;
 
-  showPreviousPageLink: boolean;
   previousPageText: string;
+  showPreviousPageLinkTitle: boolean;
+  showPreviousPageLinkAbove: boolean;
+  showPreviousPageLinkBelow: boolean;
   
   enableStickyMode: boolean;
   webpartId: string;

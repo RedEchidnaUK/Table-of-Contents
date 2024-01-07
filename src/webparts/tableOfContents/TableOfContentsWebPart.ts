@@ -28,7 +28,9 @@ export interface ITableOfContentsWebPartProps {
   showHeading1: boolean;
   showHeading2: boolean;
   showHeading3: boolean;
-  showPreviousPageLink: boolean;
+  showPreviousPageLinkTitle: boolean;
+  showPreviousPageLinkAbove: boolean;
+  showPreviousPageLinkBelow: boolean;
   previousPageText: string;
   historyCount: number;
   enableStickyMode: boolean;
@@ -87,7 +89,9 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
         showHeading3: this.properties.showHeading2,
         showHeading4: this.properties.showHeading3,
 
-        showPreviousPageLink: this.properties.showPreviousPageLink,
+        showPreviousPageLinkTitle: this.properties.showPreviousPageLinkTitle,
+        showPreviousPageLinkAbove: this.properties.showPreviousPageLinkAbove,
+        showPreviousPageLinkBelow: this.properties.showPreviousPageLinkBelow,
         previousPageText: this.properties.previousPageText,
 
         enableStickyMode: this.properties.enableStickyMode,
@@ -165,15 +169,25 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
             },
             {
               groupFields: [
-                PropertyPaneToggle('showPreviousPageLink', {
-                  label: strings.showPreviousPageViewLabel
+                PropertyPaneLabel('previousPageLabel', {
+                  text: strings.showPreviousPageViewLabel
                 }),
-                PropertyPaneTextField('previousPageText', {
-                  description: strings.previousPageFieldDescription,
-                  disabled: !this.properties.showPreviousPageLink,
+                PropertyPaneCheckbox('showPreviousPageLinkTitle', {
+                  text: strings.showPreviousPageTitleLabel,
+                  disabled: this.properties.hideTitle,
+                }),
+                PropertyPaneCheckbox('showPreviousPageLinkAbove', {
+                  text: strings.showPreviousPageAboveLabel
+                }),
+                PropertyPaneCheckbox('showPreviousPageLinkBelow', {
+                  text: strings.showPreviousPageBelowLabel
+                }),
+                PropertyPaneTextField('previousPageText', { 
+                  label: strings.previousPageFieldLabel,
+                  disabled: !this.properties.showPreviousPageLinkTitle && !this.properties.showPreviousPageLinkAbove && !this.properties.showPreviousPageLinkBelow,
                   onGetErrorMessage: this.checkToggleField,
                   value: strings.previousPageDefaultValue
-                })
+                }),
               ]
             },
             {

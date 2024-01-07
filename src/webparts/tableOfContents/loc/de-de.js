@@ -24,7 +24,6 @@ define([], function() {
     "listStyle": "Listensymbol",
     "showPreviousPageViewLabel": "Zeige Link zur vorherigen Seite",
     "previousPageFieldLabel": "Link Text",
-    "previousPageFieldDescription" : "Anzeigetext auf dem Link zur vorherigen Seite. Dieser Link ist immer der letzte Link.",
     "previousPageDefaultValue": "Zurück zur vorherigen Seite",
     "enableStickyModeLabel": "Aktiviere 'Sticky Mode'",
     "enableStickyModeDescription": "Sticky Mode fixiert das Inhaltsverzeichnis am oberen Rand der Seite. Es ist automatisch bei kleinen mobilen Geräten deaktiviert. Mit vorsicht zu benutzten, da es unerwartete Nebeneffekte haben kann.",

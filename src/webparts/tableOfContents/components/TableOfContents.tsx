@@ -262,14 +262,9 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Render the back to previous link
    */
   private renderBackToPreviousLink = (listStyle: string): JSX.Element => {
-    if (this.props.showPreviousPageLink) {
-      return (
-        <div className={styles.backItem} ><ul style={{ listStyleType: listStyle }}><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText ? this.props.previousPageText : strings.previousPageDefaultValue}</a></li></ul></div>
-      );
-    }
-    else {
-      return null;
-    }
+    return (
+      <div className={styles.backItem} ><ul style={{ listStyleType: listStyle }}><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText ? this.props.previousPageText : strings.previousPageDefaultValue}</a></li></ul></div>
+    );
   }
 
   /**
@@ -304,7 +299,9 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     // create components from a list of links
     const toc = (<ul style={{ listStyleType: listStyle }}>{this.renderLinks(links, listStyle)}</ul>);
     // create previous page link
-    const previousPage = (this.renderBackToPreviousLink(listStyle));
+    const previousPageTitle = this.props.showPreviousPageLinkTitle && !this.props.hideTitle ? (this.renderBackToPreviousLink(listStyle)) : null;
+    const previousPageAbove = this.props.showPreviousPageLinkAbove ? (this.renderBackToPreviousLink(listStyle)) : null;
+    const previousPageBelow = this.props.showPreviousPageLinkBelow ? (this.renderBackToPreviousLink(listStyle)) : null;
     // add CSS class to hide in mobile view if needed
     const hideInMobileViewClass = this.props.hideInMobileView ? (styles.hideInMobileView) : '';
     // add CSS class to hide title if requested
@@ -318,11 +315,13 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
       <section className={styles.tableOfContents}>
         <div className={hideInMobileViewClass}>
           <nav>
+            {previousPageTitle}
             <div className={titleClass}>
               <h2 data-toc-ignore="true">{escape(titleText)}</h2>
             </div>
+            {previousPageAbove}
             {toc}
-            {previousPage}
+            {previousPageBelow}
           </nav>
         </div>
       </section>

@@ -33,7 +33,9 @@
       "showHeading1": true,
       "showHeading2": true,
       "showHeading3": true,
-      "showPreviousPageLink": false,
+      "showPreviousPageTitle": false,
+      "showPreviousPageAbove": false,
+      "showPreviousPageBelow": false,    
       "hideInMobileView": true,
       "enableStickyMode": false,
       "listStyle": "default"

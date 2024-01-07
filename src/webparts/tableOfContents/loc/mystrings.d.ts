@@ -9,8 +9,10 @@ declare interface ITableOfContentsWebPartStrings {
   listStyle: string;
   showPreviousPageViewLabel: string;
   previousPageFieldLabel: string;
-  previousPageFieldDescription: string;
   previousPageDefaultValue: string;
+  showPreviousPageTitleLabel: string;
+  showPreviousPageAboveLabel: string;
+  showPreviousPageBelowLabel: string;
   enableStickyModeLabel: string;
   enableStickyModeDescription: string;
   hideInMobileViewLabel: string;
