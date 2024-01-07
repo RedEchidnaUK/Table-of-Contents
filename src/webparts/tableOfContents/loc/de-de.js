@@ -16,7 +16,7 @@ define([], function() {
   return {
     "propertyPaneDescription": "Auswählen welche Überschriften im Inhaltsverzeichnis aufgelistet werden sollen.",
     "titleDefaultValue": "Inhaltsverzeichnis",
-    "titleFieldDescription": "Text to display as the Table of Contents heading",
+    "titleFieldDescription": "Text, der als Überschrift des Inhaltsverzeichnisses angezeigt werden soll",
     "hideTitleFieldLabel": "Verstecke Überschrift",
     "showHeading1FieldLabel": "Zeige Überschriften 1",
     "showHeading2FieldLabel": "Zeige Überschriften 2",
@@ -25,6 +25,9 @@ define([], function() {
     "showPreviousPageViewLabel": "Zeige Link zur vorherigen Seite",
     "previousPageFieldLabel": "Link Text",
     "previousPageDefaultValue": "Zurück zur vorherigen Seite",
+    "showPreviousPageTitleLabel": "Über dem Titel",
+    "showPreviousPageAboveLabel": "Über dem Inhaltsverzeichnis",
+    "showPreviousPageBelowLabel": "Unten das Inhaltsverzeichnis",
     "enableStickyModeLabel": "Aktiviere 'Sticky Mode'",
     "enableStickyModeDescription": "Sticky Mode fixiert das Inhaltsverzeichnis am oberen Rand der Seite. Es ist automatisch bei kleinen mobilen Geräten deaktiviert. Mit vorsicht zu benutzten, da es unerwartete Nebeneffekte haben kann.",
     "hideInMobileViewLabel": "Verstecke auf Mobilen Geräten",

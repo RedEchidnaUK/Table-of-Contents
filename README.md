@@ -12,10 +12,12 @@ This SharePoint Framework web part displays a table of contents for the current 
 
 The web part provides the following properties:
 - `Hide heading`&thinsp;&mdash;&thinsp;whether to show the main heading.
-- `Show Headings 1`&thinsp;&mdash;&thinsp;whether to show H1 headings.
-- `Show Headings 2`&thinsp;&mdash;&thinsp;whether to show H2 headings.
-- `Show Headings 3`&thinsp;&mdash;&thinsp;whether to show H3 headings.
-- `Show the previous page link`&thinsp;&mdash;&thinsp;whether to show a link to the previous page. If used in conjunction with 'Hide heading', you could use this to just have a 'Return to previous page' link. 
+- `Show Headings Level 1`&thinsp;&mdash;&thinsp;whether to show the first level of headings.
+- `Show Headings Level 2`&thinsp;&mdash;&thinsp;whether to show second level of headings.
+- `Show Headings Level 3`&thinsp;&mdash;&thinsp;whether to show third level of headings.
+- `List Icon` &thinsp;&mdash;&thinsp; change the default icon that is shown on the links
+- `Show the previous page link`&thinsp;&mdash;&thinsp;whether to show a link to the previous page in the location seclected.
+If used in conjunction with 'Hide heading', you could use just one location to have a basic 'Return to previous page' link. 
 - `Enable 'Sticky Mode'`&thinsp;&mdash;&thinsp;Makes the table of contents 'stick' to where it was on the screen when a long page is scrolled*.
 - `Hide on small mobile devices`&thinsp;&mdash;&thinsp;whether to hide the web part on small screens.
 
