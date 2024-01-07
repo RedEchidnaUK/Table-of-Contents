@@ -18,4 +18,6 @@ export interface ITableOfContentsProps {
   hideInMobileView: boolean; 
 
   themeVariant: IReadonlyTheme | undefined;
+
+  listStyle: string;
 }

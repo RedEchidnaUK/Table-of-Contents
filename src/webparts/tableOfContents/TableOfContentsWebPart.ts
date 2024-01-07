@@ -9,7 +9,8 @@ import {
   PropertyPaneCheckbox,
   PropertyPaneToggle,
   PropertyPaneTextField,
-  PropertyPaneLabel
+  PropertyPaneLabel,
+  PropertyPaneDropdown
 } from "@microsoft/sp-property-pane";
 import {
   ThemeProvider,
@@ -22,7 +23,6 @@ import TableOfContents from './components/TableOfContents';
 import { ITableOfContentsProps } from './components/ITableOfContentsProps';
 
 export interface ITableOfContentsWebPartProps {
-  //title: string;
   hideTitle: boolean;
   titleText: string;
   showHeading1: boolean;
@@ -33,6 +33,7 @@ export interface ITableOfContentsWebPartProps {
   historyCount: number;
   enableStickyMode: boolean;
   hideInMobileView: boolean;
+  listStyle: string;
 
 }
 
@@ -77,7 +78,6 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
     const element: React.ReactElement<ITableOfContentsProps> = React.createElement(
       TableOfContents,
       {
-
         themeVariant: this._themeVariant,
 
         hideTitle: this.properties.hideTitle,
@@ -94,6 +94,8 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
         webpartId: this.context.instanceId,
 
         hideInMobileView: this.properties.hideInMobileView,
+
+        listStyle: this.properties.listStyle
       }
     );
 
@@ -134,7 +136,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
                   disabled: this.properties.hideTitle,
                   onGetErrorMessage: this.checkToggleField,
                   value: strings.titleDefaultValue
-                })
+                }),
               ]
             },
             {
@@ -147,7 +149,18 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
                 }),
                 PropertyPaneCheckbox('showHeading3', {
                   text: strings.showHeading3FieldLabel
-                })
+                }),
+                PropertyPaneDropdown('listStyle', {
+                  label: strings.listStyle,
+                  options: [
+                    { key: 'default', text: 'Default' },
+                    { key: 'disc', text: 'Disc' },
+                    { key: 'circle', text: 'Circle' },
+                    { key: 'square', text: 'Square' },
+                    { key: 'none', text: 'None' }
+                  ],
+                  selectedKey: "default"
+                }),
               ]
             },
             {

@@ -6,6 +6,7 @@ declare interface ITableOfContentsWebPartStrings {
   showHeading1FieldLabel: string;
   showHeading2FieldLabel: string;
   showHeading3FieldLabel: string;
+  listStyle: string;
   showPreviousPageViewLabel: string;
   previousPageFieldLabel: string;
   previousPageFieldDescription: string;

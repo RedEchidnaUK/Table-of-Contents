@@ -35,7 +35,8 @@
       "showHeading3": true,
       "showPreviousPageLink": false,
       "hideInMobileView": true,
-      "enableStickyMode": false
+      "enableStickyMode": false,
+      "listStyle": "default"
     }
   }]
 }

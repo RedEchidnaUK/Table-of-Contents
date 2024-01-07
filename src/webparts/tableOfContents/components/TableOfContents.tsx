@@ -224,18 +224,18 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Creates a list of components to display from a list of links.
    * @param links
    */
-  private renderLinks(links: Link[]): JSX.Element[] {
+  private renderLinks(links: Link[], listStyle: string): JSX.Element {
     // for each link render a <li> element with a link. If the link has got childNodes, additionaly render <ul> with child links.
     const elements = links.map((link, index) => {
       return (
         <li key={index}>
           <a onClick={this.scrollToHeader(link.element)} href={'#' + link.element.id}>{link.element.innerText}</a>
-          {link.childNodes.length > 0 ? (<ul>{this.renderLinks(link.childNodes)}</ul>) : ''}
+          {link.childNodes.length > 0 ? (<ul style={{ listStyleType: listStyle }}>{this.renderLinks(link.childNodes, listStyle)}</ul>) : ''}
         </li>
       );
     });
 
-    return elements;
+    return elements[0]; //Not sure what is going on here, but if the array is returned it renders twice while in 'Edit' mode.
   }
 
   /**
@@ -261,10 +261,10 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
   /**
    * Render the back to previous link
    */
-  private renderBackToPreviousLink = (): JSX.Element => {
+  private renderBackToPreviousLink = (listStyle: string): JSX.Element => {
     if (this.props.showPreviousPageLink) {
       return (
-        <div className={styles.backItem} ><ul><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText ? this.props.previousPageText : strings.previousPageDefaultValue}</a></li></ul></div>
+        <div className={styles.backItem} ><ul style={{ listStyleType: listStyle }}><li><a href="#" onClick={() => this.backToPreviousPage()}>{this.props.previousPageText ? this.props.previousPageText : strings.previousPageDefaultValue}</a></li></ul></div>
       );
     }
     else {
@@ -296,14 +296,15 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
 
   public render(): JSX.Element {
     // get headers, then filter out empty and headers from <aside> tags
+    const listStyle = escape(this.props.listStyle) === "default" ? "" : this.props.listStyle;
     const querySelector = this.getQuerySelector(this.props);
     const headers = this.getHtmlElements(querySelector).filter(this.filterEmpty).filter(this.filterAside).filter(this.filterTocIgnore);
     // create a list of links from headers
     const links = this.getLinks(headers);
     // create components from a list of links
-    const toc = (<ul>{this.renderLinks(links)}</ul>);
+    const toc = (<ul style={{ listStyleType: listStyle }}>{this.renderLinks(links, listStyle)}</ul>);
     // create previous page link
-    const previousPage = (this.renderBackToPreviousLink());
+    const previousPage = (this.renderBackToPreviousLink(listStyle));
     // add CSS class to hide in mobile view if needed
     const hideInMobileViewClass = this.props.hideInMobileView ? (styles.hideInMobileView) : '';
     // add CSS class to hide title if requested

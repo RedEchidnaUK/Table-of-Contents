@@ -21,6 +21,7 @@ define([], function() {
     "showHeading1FieldLabel": "Zeige Überschriften 1",
     "showHeading2FieldLabel": "Zeige Überschriften 2",
     "showHeading3FieldLabel": "Zeige Überschriften 3",
+    "listStyle": "Listensymbol",
     "showPreviousPageViewLabel": "Zeige Link zur vorherigen Seite",
     "previousPageFieldLabel": "Link Text",
     "previousPageFieldDescription" : "Anzeigetext auf dem Link zur vorherigen Seite. Dieser Link ist immer der letzte Link.",
