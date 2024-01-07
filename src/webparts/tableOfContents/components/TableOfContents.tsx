@@ -206,6 +206,23 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     return !(element.getAttribute("data-toc-ignore"));
   }
 
+  private filterStyleDisplayNone(element: HTMLElement): boolean {
+    let styleDisplayNone = false;
+
+    let parentElement = element.parentElement;
+
+    while (parentElement) {
+      if (parentElement.style.display.toLocaleLowerCase() === 'none') {
+        styleDisplayNone = true;
+        break;
+      }
+
+      parentElement = parentElement.parentElement;
+    }
+
+    return !styleDisplayNone;
+  }
+
   /**
    * Returns a click handler that scrolls a page to the specified element.
    */
@@ -293,7 +310,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     // get headers, then filter out empty and headers from <aside> tags
     const listStyle = escape(this.props.listStyle) === "default" ? "" : this.props.listStyle;
     const querySelector = this.getQuerySelector(this.props);
-    const headers = this.getHtmlElements(querySelector).filter(this.filterEmpty).filter(this.filterAside).filter(this.filterTocIgnore);
+    const headers = this.getHtmlElements(querySelector).filter(this.filterEmpty).filter(this.filterAside).filter(this.filterTocIgnore).filter(this.filterStyleDisplayNone);
     // create a list of links from headers
     const links = this.getLinks(headers);
     // create components from a list of links
