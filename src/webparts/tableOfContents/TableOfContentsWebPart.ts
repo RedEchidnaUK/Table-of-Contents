@@ -25,9 +25,12 @@ import { ITableOfContentsProps } from './components/ITableOfContentsProps';
 export interface ITableOfContentsWebPartProps {
   hideTitle: boolean;
   titleText: string;
+  searchText: boolean;
+  searchMarkdown: boolean;
   showHeading1: boolean;
   showHeading2: boolean;
   showHeading3: boolean;
+  showHeading4: boolean;
   showPreviousPageLinkTitle: boolean;
   showPreviousPageLinkAbove: boolean;
   showPreviousPageLinkBelow: boolean;
@@ -85,9 +88,13 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
         hideTitle: this.properties.hideTitle,
         titleText: this.properties.titleText,
 
+        searchText: this.properties.searchText,
+        searchMarkdown: this.properties.searchMarkdown,
+
         showHeading2: this.properties.showHeading1,
         showHeading3: this.properties.showHeading2,
         showHeading4: this.properties.showHeading3,
+        showHeading5: this.properties.showHeading4,
 
         showPreviousPageLinkTitle: this.properties.showPreviousPageLinkTitle,
         showPreviousPageLinkAbove: this.properties.showPreviousPageLinkAbove,
@@ -122,6 +129,33 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    let showHeading4: any;
+    let showPreviousPageLinkTitle: any;
+
+    if (this.properties.searchMarkdown) {
+      showHeading4 = PropertyPaneCheckbox('showHeading4', {
+        text: strings.showHeading4FieldLabel
+      })
+    }
+    else {
+      showHeading4 = PropertyPaneCheckbox('showHeading4', {
+        text: strings.showHeading4FieldLabel,
+        disabled: true
+      });
+    }
+
+    if (this.properties.hideTitle) {
+      showPreviousPageLinkTitle = PropertyPaneCheckbox('showPreviousPageLinkTitle', {
+        text: strings.showPreviousPageTitleLabel,
+        disabled: true
+      })
+    }
+    else {
+      showPreviousPageLinkTitle = PropertyPaneCheckbox('showPreviousPageLinkTitle', {
+        text: strings.showPreviousPageTitleLabel
+      });
+    }
+
     return {
       pages: [
         {
@@ -145,6 +179,22 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
             },
             {
               groupFields: [
+                PropertyPaneLabel('searchWebpartsLabel', {
+                  text: strings.searchWebpartsLabel
+                }),
+                PropertyPaneCheckbox('searchText', {
+                  text: strings.searchText
+                }),
+                PropertyPaneCheckbox('searchMarkdown', {
+                  text: strings.searchMarkdown
+                }),
+              ]
+            },
+            {
+              groupFields: [
+                PropertyPaneLabel('showHeadingLevelsLabel', {
+                  text: strings.showHeadingLevelsLabel
+                }),
                 PropertyPaneCheckbox('showHeading1', {
                   text: strings.showHeading1FieldLabel
                 }),
@@ -154,6 +204,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
                 PropertyPaneCheckbox('showHeading3', {
                   text: strings.showHeading3FieldLabel
                 }),
+                showHeading4,
                 PropertyPaneDropdown('listStyle', {
                   label: strings.listStyle,
                   options: [
@@ -172,19 +223,16 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
                 PropertyPaneLabel('previousPageLabel', {
                   text: strings.showPreviousPageViewLabel
                 }),
-                PropertyPaneCheckbox('showPreviousPageLinkTitle', {
-                  text: strings.showPreviousPageTitleLabel,
-                  disabled: this.properties.hideTitle,
-                }),
+                showPreviousPageLinkTitle,
                 PropertyPaneCheckbox('showPreviousPageLinkAbove', {
                   text: strings.showPreviousPageAboveLabel
                 }),
                 PropertyPaneCheckbox('showPreviousPageLinkBelow', {
                   text: strings.showPreviousPageBelowLabel
                 }),
-                PropertyPaneTextField('previousPageText', { 
+                PropertyPaneTextField('previousPageText', {
                   label: strings.previousPageFieldLabel,
-                  disabled: !this.properties.showPreviousPageLinkTitle && !this.properties.showPreviousPageLinkAbove && !this.properties.showPreviousPageLinkBelow,
+                  disabled: (!this.properties.showPreviousPageLinkTitle || this.properties.hideTitle) && !this.properties.showPreviousPageLinkAbove && !this.properties.showPreviousPageLinkBelow,
                   onGetErrorMessage: this.checkToggleField,
                   value: strings.previousPageDefaultValue
                 }),

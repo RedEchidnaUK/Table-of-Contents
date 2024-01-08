@@ -29,6 +29,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
   private static h2Tag = "h2";
   private static h3Tag = "h3";
   private static h4Tag = "h4";
+  private static h5Tag = "h5";
 
   /**
    * Create a state for the history count. 
@@ -117,6 +118,8 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
         return 3;
       case (TableOfContents.h4Tag):
         return 4;
+      case (TableOfContents.h5Tag):
+        return 5;
       default:
         throw new Error('Unknown header: ' + header);
     }
@@ -145,24 +148,39 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * @param props
    */
   private getQuerySelector(props: ITableOfContentsProps) {
-    const queryParts = [];
-    const classes = ['.cke_editable', '.ck-content', '.Collapsible']
+    let queryParts = [];
+    let queryItems = [];
+
+    if (this.props.searchText) {
+      queryItems.push('.cke_editable', '.ck-content', '.Collapsible');
+    }
+
+    if (this.props.searchMarkdown) {
+      queryItems.push('[data-sp-feature-tag*="Markdown"]');
+    }
+
 
     if (props.showHeading2) {
-      for (let i = 0; i < classes.length; i++) {
-        queryParts.push(classes[i] + " " + TableOfContents.h2Tag);
+      for (let i = 0; i < queryItems.length; i++) {
+        queryParts.push(queryItems[i] + " " + TableOfContents.h2Tag);
       }
     }
 
     if (props.showHeading3) {
-      for (let i = 0; i < classes.length; i++) {
-        queryParts.push(classes[i] + " " + TableOfContents.h3Tag);
+      for (let i = 0; i < queryItems.length; i++) {
+        queryParts.push(queryItems[i] + " " + TableOfContents.h3Tag);
       }
     }
 
     if (props.showHeading4) {
-      for (let i = 0; i < classes.length; i++) {
-        queryParts.push(classes[i] + " " + TableOfContents.h4Tag);
+      for (let i = 0; i < queryItems.length; i++) {
+        queryParts.push(queryItems[i] + " " + TableOfContents.h4Tag);
+      }
+    }
+
+    if (props.showHeading5) {
+      for (let i = 0; i < queryItems.length; i++) {
+        queryParts.push(queryItems[i] + " " + TableOfContents.h5Tag);
       }
     }
 
@@ -252,7 +270,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
       );
     });
 
-    return elements; 
+    return elements;
   }
 
   /**

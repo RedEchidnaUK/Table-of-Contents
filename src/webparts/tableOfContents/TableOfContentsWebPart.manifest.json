@@ -30,9 +30,12 @@
     },
     "officeFabricIconFontName": "GroupedList",
     "properties": {
+      "searchText": true,
+      "searchMarkdown": false,
       "showHeading1": true,
       "showHeading2": true,
       "showHeading3": true,
+      "showHeading4": true,
       "showPreviousPageTitle": false,
       "showPreviousPageAbove": false,
       "showPreviousPageBelow": false,    

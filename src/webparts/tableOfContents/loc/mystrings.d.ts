@@ -1,11 +1,16 @@
 declare interface ITableOfContentsWebPartStrings {
+  searchWebpartsLabel: string;
+  searchText: string;
+  searchMarkdown: string;
   propertyPaneDescription: string;
   titleDefaultValue: string;
   titleFieldDescription: string;
   hideTitleFieldLabel: string;
+  showHeadingLevelsLabel: string;
   showHeading1FieldLabel: string;
   showHeading2FieldLabel: string;
   showHeading3FieldLabel: string;
+  showHeading4FieldLabel: string;
   listStyle: string;
   showPreviousPageViewLabel: string;
   previousPageFieldLabel: string;
