@@ -3,12 +3,9 @@
 ## Summary
 This SharePoint Framework web part displays a table of contents for the current page and is based on [Dzmitry Rogozhny's](https://github.com/dmitryrogozhny) excellent [Table of Contents](https://github.com/dmitryrogozhny/sharepoint-lab/blob/master/table-of-contents/). I haven't forked the code as it was originally for an internal project and I didn't want to fork the entire repositry, just this sub folder. There's probably some way in GIT to fork just a sub folder, but I don't know how.
 
-
 ![web part preview](./assets/table-of-contents-display.png)
 
-### Web part properties
-
-![web part properties](./assets/table-of-contents-properties.png | width=300)
+<img src="./assets/table-of-contents-properties.png" width="300px">
 
 The web part provides the following properties:
 - `Hide heading`&thinsp;&mdash;&thinsp;whether to show the main heading.
