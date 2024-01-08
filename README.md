@@ -8,13 +8,15 @@ This SharePoint Framework web part displays a table of contents for the current 
 
 ### Web part properties
 
-![web part properties](./assets/table-of-contents-properties.png)
+![web part properties](./assets/table-of-contents-properties.png | width=300)
 
 The web part provides the following properties:
 - `Hide heading`&thinsp;&mdash;&thinsp;whether to show the main heading.
+- `Search Webparts`&thinsp;&mdash;&thinsp; which webparts to search for headings.
 - `Show Headings Level 1`&thinsp;&mdash;&thinsp;whether to show the first level of headings.
 - `Show Headings Level 2`&thinsp;&mdash;&thinsp;whether to show second level of headings.
 - `Show Headings Level 3`&thinsp;&mdash;&thinsp;whether to show third level of headings.
+- `Show Headings Level 4`&thinsp;&mdash;&thinsp;whether to show fourth level of headings. Only available for Markdown webpart
 - `List Icon` &thinsp;&mdash;&thinsp; change the default icon that is shown on the links
 - `Show the previous page link`&thinsp;&mdash;&thinsp;whether to show a link to the previous page in the location seclected.
 If used in conjunction with 'Hide heading', you could use just one location to have a basic 'Return to previous page' link. 
