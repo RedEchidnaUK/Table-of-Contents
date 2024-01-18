@@ -55,7 +55,11 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
     this.setCSSVariables(this._themeVariant.semanticColors);
     // Register a handler to be notified if the theme variant changes
     this._themeProvider.themeChangedEvent.add(this, this._handleThemeChangedEvent);
-    return super.onInit();
+    //return super.onInit()
+    return super.onInit().then(_ => { 
+      this.properties.searchText = true; 
+      this.properties.showHeading4 = true;      
+    });
   }
 
   private setCSSVariables(theming: any): any {
@@ -183,7 +187,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
                   text: strings.searchWebpartsLabel
                 }),
                 PropertyPaneCheckbox('searchText', {
-                  text: strings.searchText
+                  text: strings.searchText,
                 }),
                 PropertyPaneCheckbox('searchMarkdown', {
                   text: strings.searchMarkdown
