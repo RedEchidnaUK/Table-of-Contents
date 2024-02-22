@@ -7,6 +7,7 @@ define([], function() {
     "searchWebpartsLabel": "Search Webparts",
     "searchText": "Text",
     "searchMarkdown": "Markdown",
+    "searchCollapsible": "Collapsible Section Header",
     "showHeadingLevelsLabel": "Show Headings",
     "showHeading1FieldLabel": "Level 1",
     "showHeading2FieldLabel": "Level 2",

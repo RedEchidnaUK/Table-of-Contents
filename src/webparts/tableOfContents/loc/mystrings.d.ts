@@ -2,6 +2,7 @@ declare interface ITableOfContentsWebPartStrings {
   searchWebpartsLabel: string;
   searchText: string;
   searchMarkdown: string;
+  searchCollapsible: string;
   propertyPaneDescription: string;
   titleDefaultValue: string;
   titleFieldDescription: string;

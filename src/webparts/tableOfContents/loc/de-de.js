@@ -21,6 +21,7 @@ define([], function() {
     "searchWebpartsLabel": "Webparts durchsuchen",
     "searchText": "Text",
     "searchMarkdown": "Markdown",
+    "searchCollapsible": "Zusammenklappbare Abschnittsüberschrift",
     "showHeadingLevelsLabel": "Überschriften anzeigen",
     "showHeading1FieldLabel": "Ebene 1",
     "showHeading2FieldLabel": "Ebene 2",

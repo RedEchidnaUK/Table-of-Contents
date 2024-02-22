@@ -1,7 +1,7 @@
 # Table of Contents Web Part
 
 ## Summary
-This SharePoint Framework web part displays a table of contents for the current page and is based on [Dzmitry Rogozhny's](https://github.com/dmitryrogozhny) excellent [Table of Contents](https://github.com/dmitryrogozhny/sharepoint-lab/blob/master/table-of-contents/). I haven't forked the code as it was originally for an internal project and I didn't want to fork the entire repositry, just this sub folder. There's probably some way in GIT to fork just a sub folder, but I don't know how.
+This SharePoint Framework web part displays a Table of Contents for the current page and is based on [Dzmitry Rogozhny's](https://github.com/dmitryrogozhny) excellent [Table of Contents](https://github.com/dmitryrogozhny/sharepoint-lab/blob/master/table-of-contents/). I haven't forked the code as it was originally for an internal project and I didn't want to fork the entire repositry, just this sub folder. There's probably some way in GIT to fork just a sub folder, but I don't know how.
 
 ![web part preview](./assets/table-of-contents-display.png)
 
@@ -17,10 +17,13 @@ The web part provides the following properties:
 - `List Icon` &thinsp;&mdash;&thinsp; change the default icon that is shown on the links
 - `Show the previous page link`&thinsp;&mdash;&thinsp;whether to show a link to the previous page in the location seclected.
 If used in conjunction with 'Hide heading', you could use just one location to have a basic 'Return to previous page' link. 
-- `Enable 'Sticky Mode'`&thinsp;&mdash;&thinsp;Makes the table of contents 'stick' to where it was on the screen when a long page is scrolled*.
+- `Enable 'Sticky Mode'`&thinsp;&mdash;&thinsp;Makes the Table of Contents 'stick' to where it was on the screen when a long page is scrolled*.
 - `Hide on small mobile devices`&thinsp;&mdash;&thinsp;whether to hide the web part on small screens.
 
 *This mode will not work correctly on the local workbench, only the live site. It should also be used with caution as it works by manipulating Microsoft's styles on the containing element, so it may stop working if Microsoft change their code, you have been warned! When used with this mode, it is best to place the Table of Contents in a 'vertical section' as this covers the full length of a page.
+
+### Known Issues
+When using the Markdown webpart within a Collapsible section, the headings do not show in the Table of Contents until the page is scrolled to show those items. This is due to Microsoft not rendering the items in the DOM until they are visible on the page. Consequently, the Table of Contents is also unable to 'see' them.
 
 ## Minimal Path to Awesome
 ### Pre-built package

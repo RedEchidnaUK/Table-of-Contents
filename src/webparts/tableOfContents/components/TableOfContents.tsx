@@ -136,9 +136,18 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
       const htmlElements: HTMLElement[] = [];
 
       for (let i = 0; i < elements.length; i++) {
-        htmlElements.push(elements[i] as HTMLElement);
-      }
 
+        // While in edit mode Section headers are not headers, but text areas. This converts them to H2 tags
+        if (elements[i].tagName === "TEXTAREA") {
+          let temp = document.createElement('h2')
+          temp.innerHTML = elements[i].innerHTML
+          htmlElements.push(temp)
+        }
+        else {
+          htmlElements.push(elements[i] as HTMLElement);
+        }
+
+      }
       return htmlElements;
     }
   }
@@ -152,17 +161,27 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     let queryItems = [];
 
     if (this.props.searchText) {
-      queryItems.push('.cke_editable', '.ck-content', '.Collapsible');
+      queryItems.push('.cke_editable', '.ck-content');
+    }
+
+    if (this.props.searchCollapsible) {
+      // queryItems.push('.titleContainer');
+      queryItems.push('[data-automation-id*="CollapsibleLayer-Heading"]', '[data-automation-id*="CollapsibleLayer-TitleInput"]');
     }
 
     if (this.props.searchMarkdown) {
       queryItems.push('[data-sp-feature-tag*="Markdown"]');
     }
 
-
     if (props.showHeading2) {
       for (let i = 0; i < queryItems.length; i++) {
-        queryParts.push(queryItems[i] + " " + TableOfContents.h2Tag);
+
+        if (queryItems[i] === '[data-automation-id*="CollapsibleLayer-TitleInput"]') {
+          queryParts.push(queryItems[i]);
+        }
+        else {
+          queryParts.push(queryItems[i] + " " + TableOfContents.h2Tag);
+        }
       }
     }
 
@@ -224,6 +243,10 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     return !(element.getAttribute("data-toc-ignore"));
   }
 
+  /**
+   * Filters elements that have been set with a sytle of 'display: none'
+   * @param element
+   */
   private filterStyleDisplayNone(element: HTMLElement): boolean {
     let styleDisplayNone = false;
 

@@ -27,6 +27,7 @@ export interface ITableOfContentsWebPartProps {
   titleText: string;
   searchText: boolean;
   searchMarkdown: boolean;
+  searchCollapsible: boolean;
   showHeading1: boolean;
   showHeading2: boolean;
   showHeading3: boolean;
@@ -55,10 +56,12 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
     this.setCSSVariables(this._themeVariant.semanticColors);
     // Register a handler to be notified if the theme variant changes
     this._themeProvider.themeChangedEvent.add(this, this._handleThemeChangedEvent);
-    //return super.onInit()
-    return super.onInit().then(_ => { 
-      this.properties.searchText = true; 
-      this.properties.showHeading4 = true;      
+    // return super.onInit()
+    return super.onInit().then(_ => {
+      if (this.properties.searchText === undefined) {
+        this.properties.searchText = true;
+        this.properties.showHeading4 = true;
+      }
     });
   }
 
@@ -94,6 +97,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
 
         searchText: this.properties.searchText,
         searchMarkdown: this.properties.searchMarkdown,
+        searchCollapsible: this.properties.searchCollapsible,
 
         showHeading2: this.properties.showHeading1,
         showHeading3: this.properties.showHeading2,
@@ -191,6 +195,9 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
                 }),
                 PropertyPaneCheckbox('searchMarkdown', {
                   text: strings.searchMarkdown
+                }),
+                PropertyPaneCheckbox('searchCollapsible', {
+                  text: strings.searchCollapsible
                 }),
               ]
             },
