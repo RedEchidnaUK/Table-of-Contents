@@ -335,14 +335,12 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     if (HTMLElementSticky != null) {
       if (this.props.enableStickyMode) {
 
-        HTMLElementSticky.classList.add(styles.sticky);
-        HTMLElementSticky.parentElement.parentElement.classList.add(styles.height100pc);
+        HTMLElementSticky.parentElement.parentElement.parentElement.classList.add(styles.sticky);
 
       }
       else {
 
-        HTMLElementSticky.classList.remove(styles.sticky);
-        HTMLElementSticky.parentElement.parentElement.classList.remove(styles.height100pc);
+        HTMLElementSticky.parentElement.parentElement.parentElement.classList.remove(styles.sticky);
       }
     }
   }
