@@ -165,7 +165,6 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     }
 
     if (this.props.searchCollapsible) {
-      // queryItems.push('.titleContainer');
       queryItems.push('[data-automation-id*="CollapsibleLayer-Heading"]', '[data-automation-id*="CollapsibleLayer-TitleInput"]');
     }
 
@@ -374,7 +373,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
           <nav>
             {previousPageTitle}
             <div className={titleClass}>
-              <h2 data-toc-ignore="true">{escape(titleText)}</h2>
+              <h2 data-toc-ignore="true">{titleText}</h2>
             </div>
             {previousPageAbove}
             {toc}
