@@ -333,14 +333,15 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
 
     const HTMLElementSticky: HTMLElement = document.querySelector("[id='" + this.props.webpartId + "']");
     if (HTMLElementSticky != null) {
-      if (this.props.enableStickyMode) {
+      if (this.props.enableStickyMode && window.innerWidth > 1024) {
 
-        HTMLElementSticky.parentElement.parentElement.parentElement.classList.add(styles.sticky);
-
+        HTMLElementSticky.parentElement.parentElement.parentElement.style.position = "Sticky";
+        HTMLElementSticky.parentElement.parentElement.parentElement.style.top = "0px";
       }
       else {
 
-        HTMLElementSticky.parentElement.parentElement.parentElement.classList.remove(styles.sticky);
+        HTMLElementSticky.parentElement.parentElement.parentElement.style.position = "";
+        HTMLElementSticky.parentElement.parentElement.parentElement.style.top = "";
       }
     }
   }

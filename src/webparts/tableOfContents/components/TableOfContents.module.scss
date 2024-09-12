@@ -2,8 +2,6 @@
 
 .tableOfContents {
 
-  background-color: var(--bodyBackground);
-
   a {
     color: var(--actionLink);
     text-decoration: none;
@@ -42,12 +40,5 @@
 
   .hideTitle {
     display: none !important;
-  }
-}
-
-.sticky {
-  @include ms-screen-xl-up {
-    position: sticky;
-    top: 0px;
   }
 }
