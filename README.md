@@ -23,7 +23,7 @@ If used in conjunction with 'Hide heading', you could use just one location to h
 *This mode will not work correctly on the local workbench, only the live site. It should also be used with caution as it works by manipulating Microsoft's styles on the containing element, so it may stop working if Microsoft change their code, you have been warned! When used with this mode, it is best to place the Table of Contents in a 'vertical section' as this covers the full length of a page.
 
 ### Known Issues
-When using the Markdown webpart within a Collapsible section, the headings do not show in the Table of Contents until the page is scrolled to show those items. This is due to Microsoft not rendering the items in the DOM until they are visible on the page. Consequently, the Table of Contents is also unable to 'see' them.
+When using the Markdown webpart within a Collapsible section, the headings do not show in the Table of Contents until they are shown on the page. This is due to Microsoft not rendering the items in the DOM until they are visible on the page. Consequently, the Table of Contents is also unable to 'see' them.
 
 ## Minimal Path to Awesome
 ### Pre-built package

@@ -73,7 +73,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
         } else if (compare < 0) {
 
           let targetParent = prevLink.parent;
-          // if current header bigger than the previous one, go up in the hierarchy to find a place to add link
+          // if current header is bigger than the previous one, go up in the hierarchy to find a place to add link
           // go up in the hierarchy of links until a link with bigger tag is found or until the root link found
           // i.e. for H4 look for H3 or H2, for H3 look for H2, for H2 look for the root.
           while ((targetParent != root) && (this.compareHeaders(header.tagName, targetParent.element.tagName) <= 0)) {
@@ -83,7 +83,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
           link.parent = targetParent;
           targetParent.childNodes.push(link);
         } else {
-          // if current header is smaller thab the previous one, add link for it as a child of the previous link
+          // if current header is smaller than the previous one, add link for it as a child of the previous link
           link.parent = prevLink;
           prevLink.childNodes.push(link);
         }
@@ -165,7 +165,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     }
 
     if (this.props.searchCollapsible) {
-      queryItems.push('[data-automation-id*="CollapsibleLayer-Heading"]', '[data-automation-id*="CollapsibleLayer-TitleInput"]');
+      queryItems.push('[data-automation-id*="CanvasZone-SectionContainer"]');
     }
 
     if (this.props.searchMarkdown) {
@@ -210,7 +210,18 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * @param element
    */
   private filterEmpty(element: HTMLElement): boolean {
-    return element.innerText.trim() !== '';
+    // Check if element is empty. If it is in a collapsible section with a 'Premalink' then return true as we can fix that later.
+    if (element.innerText.trim() !== '') {
+      return true;
+    }
+    else if (element.firstElementChild !== null) {
+      if (element.firstElementChild.getAttribute('role') === 'link') {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
   }
 
   /**
@@ -282,11 +293,30 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * @param links
    */
   private renderLinks(links: Link[], listStyle: string): JSX.Element[] {
-    // for each link render a <li> element with a link. If the link has got childNodes, additionaly render <ul> with child links.
+    // For each link render a <li> element with a link. If the link has got childNodes, additionaly render <ul> with child links.
     const elements = links.map((link, index) => {
+      let linkText = link.element.innerText;
+      const regex = /title="Permalink for ([^"]+)"/;
+
+      // If linkText is empty, extract the text from the 'Permalink'
+      if (linkText === "") {
+        if (link.element.firstElementChild.getAttribute('role') === 'link') {
+          let match = link.element.innerHTML.match(regex);
+          if (match.length >= 2) {
+            linkText = match[1];
+          }
+          else {
+            linkText = 'Error!';
+          }
+        }
+        else {
+          linkText = 'Error!';
+        }
+      }
+
       return (
         <li key={index}>
-          <a onClick={this.scrollToHeader(link.element)} href={'#' + link.element.id}>{link.element.innerText}</a>
+          <a onClick={this.scrollToHeader(link.element)} href={'#' + link.element.id}>{linkText}</a>
           {link.childNodes.length > 0 ? (<ul style={{ listStyleType: listStyle }}>{this.renderLinks(link.childNodes, listStyle)}</ul>) : ''}
         </li>
       );
