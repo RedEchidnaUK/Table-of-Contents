@@ -27,4 +27,6 @@ export interface ITableOfContentsProps {
   themeVariant: IReadonlyTheme | undefined;
 
   listStyle: string;
+
+  isEditMode: boolean;
 }

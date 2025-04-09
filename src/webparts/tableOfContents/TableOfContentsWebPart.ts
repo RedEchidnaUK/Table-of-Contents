@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import { Version, DisplayMode } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart
 } from '@microsoft/sp-webpart-base';
@@ -114,7 +114,8 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
 
         hideInMobileView: this.properties.hideInMobileView,
 
-        listStyle: this.properties.listStyle
+        listStyle: this.properties.listStyle,
+        isEditMode: this.displayMode == DisplayMode.Edit,
       }
     );
 

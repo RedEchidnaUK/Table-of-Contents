@@ -364,13 +364,26 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     if (HTMLElementSticky != null) {
       if (this.props.enableStickyMode && window.innerWidth > 1024) {
 
-        HTMLElementSticky.parentElement.parentElement.parentElement.style.position = "Sticky";
-        HTMLElementSticky.parentElement.parentElement.parentElement.style.top = "0px";
+        if (this.props.isEditMode){
+          HTMLElementSticky.parentElement.parentElement.style.position = "Sticky";
+          HTMLElementSticky.parentElement.parentElement.style.top = "0px";
+          HTMLElementSticky.parentElement.parentElement.parentElement.style.height = "100%";
+          console.log("Edit Mode");
+        }
+        else {
+          HTMLElementSticky.style.position = "Sticky";
+          HTMLElementSticky.style.top = "0px";
+          HTMLElementSticky.parentElement.style.height = "100%";
+          console.log("Normal Mode");
+        }
       }
       else {
-
-        HTMLElementSticky.parentElement.parentElement.parentElement.style.position = "";
-        HTMLElementSticky.parentElement.parentElement.parentElement.style.top = "";
+        HTMLElementSticky.style.position = "";
+        HTMLElementSticky.style.top = "";
+        HTMLElementSticky.parentElement.style.height = "";
+        HTMLElementSticky.parentElement.parentElement.style.position = "";
+        HTMLElementSticky.parentElement.parentElement.style.top = "";
+        HTMLElementSticky.parentElement.parentElement.parentElement.style.height = "";
       }
     }
   }
