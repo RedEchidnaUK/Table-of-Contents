@@ -132,7 +132,8 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
     if (querySelector.length === 0) {
       return [];
     } else {
-      const elements = document.querySelectorAll(querySelector);
+      const div = document.getElementById('spPageCanvasContent'); //this is the main content area of the page
+      const elements = div.querySelectorAll(querySelector);
       const htmlElements: HTMLElement[] = [];
 
       for (let i = 0; i < elements.length; i++) {
