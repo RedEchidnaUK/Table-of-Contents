@@ -140,7 +140,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
 
         // While in edit mode Section headers are not headers, but text areas. This converts them to H2 tags
         if (elements[i].tagName === "TEXTAREA") {
-          let temp = document.createElement('h2')
+          const temp = document.createElement('h2')
           temp.innerHTML = elements[i].innerHTML
           htmlElements.push(temp)
         }
@@ -158,8 +158,8 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * @param props
    */
   private getQuerySelector(props: ITableOfContentsProps) {
-    let queryParts = [];
-    let queryItems = [];
+    const queryParts = [];
+    const queryItems = [];
 
     if (this.props.searchText) {
       queryItems.push('.cke_editable', '.ck-content');
@@ -302,7 +302,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
       // If linkText is empty, extract the text from the 'Permalink'
       if (linkText === "") {
         if (link.element.firstElementChild.getAttribute('role') === 'link') {
-          let match = link.element.innerHTML.match(regex);
+          const match = link.element.innerHTML.match(regex);
           if (match.length >= 2) {
             linkText = match[1];
           }

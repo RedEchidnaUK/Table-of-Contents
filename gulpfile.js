@@ -10,7 +10,7 @@ let syncVersionsSubtask = build.subTask('version-sync', function (gulp, buildOpt
     this.log('Synching versions');
 
     // import gulp utilits to write error messages
-    const gutil = require('gulp-util');
+    const gutil = require('fancy-log');
 
     // import file system utilities form nodeJS
     const fs = require('fs');

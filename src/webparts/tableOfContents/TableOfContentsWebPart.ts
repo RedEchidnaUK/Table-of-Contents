@@ -57,7 +57,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
     // Register a handler to be notified if the theme variant changes
     this._themeProvider.themeChangedEvent.add(this, this._handleThemeChangedEvent);
     // return super.onInit()
-    return super.onInit().then(_ => {
+    return super.onInit().then(() => {
       if (this.properties.searchText === undefined) {
         this.properties.searchText = true;
         this.properties.showHeading4 = true;
@@ -65,15 +65,13 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
     });
   }
 
-  private setCSSVariables(theming: any): any {
-    if (!theming) { return null; }
-    let themingKeys = Object.keys(theming);
-    if (themingKeys !== null) {
-      themingKeys.forEach(key => {
-        this.domElement.style.setProperty(`--${key}`, theming[key]);
-      });
-    }
+  private setCSSVariables(theming: Record<string, string> | null): void {
+    if (!theming) return;
+    Object.keys(theming).forEach(key => {
+      this.domElement.style.setProperty(`--${key}`, theming[key]);
+    });
   }
+
 
   /**
  * Update the current theme variant reference and re-render.
