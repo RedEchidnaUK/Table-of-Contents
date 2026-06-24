@@ -36,12 +36,11 @@ Here's how to deploy the web part to the site collection's app catalog:
 - Clone this repository
 - In the command line run:
   - `npm install`
-  - `gulp serve`
+  - `heft start`
 
 ### Deploy
-- `gulp clean`
-- `gulp bundle --ship`
-- `gulp package-solution --ship`
+- `heft build --production`
+- `heft package-solution --production`
 - Upload .sppkg file from sharepoint\solution to your tenant App Catalog
   - E.g.: https://`tenant`.sharepoint.com/sites/AppCatalog/AppCatalog
 - Add the web part to a site collection, and test it on a page

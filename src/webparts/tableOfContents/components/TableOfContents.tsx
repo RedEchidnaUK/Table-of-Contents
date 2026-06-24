@@ -46,7 +46,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Gets a nested list of links based on the list of headers specified.
    * @param headers List of HtmlElements for H2, H3, and H4 headers.
    */
-  private getLinks(headers: HTMLElement[]): Link[] {
+private getLinks(headers: HTMLElement[]): Link[] {
     // create a root link that will be a root for links' tree
     const root: Link = { childNodes: [], parent: undefined, element: undefined };
 
@@ -63,30 +63,10 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
       } else {
         const prevHeader = headers[i - 1];
 
-        // compare the current header and the previous one to define where to add new link
-        const compare = this.compareHeaders(header.tagName, prevHeader.tagName);
-
-        if (compare === 0) {
-          // if headers are on the same level, add header to the same parent
-          link.parent = prevLink.parent;
-          prevLink.parent.childNodes.push(link);
-        } else if (compare < 0) {
-
-          let targetParent = prevLink.parent;
-          // if current header is bigger than the previous one, go up in the hierarchy to find a place to add link
-          // go up in the hierarchy of links until a link with bigger tag is found or until the root link found
-          // i.e. for H4 look for H3 or H2, for H3 look for H2, for H2 look for the root.
-          while ((targetParent != root) && (this.compareHeaders(header.tagName, targetParent.element.tagName) <= 0)) {
-            targetParent = targetParent.parent;
-          }
-
-          link.parent = targetParent;
-          targetParent.childNodes.push(link);
-        } else {
           // if current header is smaller than the previous one, add link for it as a child of the previous link
-          link.parent = prevLink;
-          prevLink.childNodes.push(link);
-        }
+          link.parent = prevLink!;
+          prevLink!.childNodes.push(link);
+        
       }
 
       prevLink = link;
@@ -133,10 +113,14 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
       return [];
     } else {
       const div = document.getElementById('spPageCanvasContent'); //this is the main content area of the page
+      if (!div) {
+        return [];
+      }
       const elements = div.querySelectorAll(querySelector);
       const htmlElements: HTMLElement[] = [];
 
       for (let i = 0; i < elements.length; i++) {
+        const currentElement = elements[i] as HTMLElement;
 
         // While in edit mode Section headers are not headers, but text areas. This converts them to H2 tags
         if (elements[i].tagName === "TEXTAREA") {
@@ -157,7 +141,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Returns a query selector based on the specified props
    * @param props
    */
-  private getQuerySelector(props: ITableOfContentsProps) {
+  private getQuerySelector(props: ITableOfContentsProps): string {
     const queryParts = [];
     const queryItems = [];
 
@@ -223,6 +207,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
         return false;
       }
     }
+    return false;
   }
 
   /**
@@ -279,7 +264,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Returns a click handler that scrolls a page to the specified element.
    */
   private scrollToHeader = (target: HTMLElement) => {
-    return (event: React.SyntheticEvent) => {
+    return (event: React.SyntheticEvent): void => {
       //decrement the history count to allow the return to previous page to work correctly
       const temp = this.state.historyCount - 1;
       this.setState({ historyCount: temp });
@@ -296,14 +281,19 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
   private renderLinks(links: Link[], listStyle: string): JSX.Element[] {
     // For each link render a <li> element with a link. If the link has got childNodes, additionaly render <ul> with child links.
     const elements = links.map((link, index) => {
-      let linkText = link.element.innerText;
+      if (!link.element) {
+        return null;
+      }
+
+      const element = link.element;
+      let linkText = element.innerText;
       const regex = /title="Permalink for ([^"]+)"/;
 
       // If linkText is empty, extract the text from the 'Permalink'
       if (linkText === "") {
-        if (link.element.firstElementChild.getAttribute('role') === 'link') {
-          const match = link.element.innerHTML.match(regex);
-          if (match.length >= 2) {
+        if (element.firstElementChild && element.firstElementChild.getAttribute('role') === 'link') {
+          const match = element.innerHTML.match(regex);
+          if (match && match.length >= 2) {
             linkText = match[1];
           }
           else {
@@ -317,11 +307,11 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
 
       return (
         <li key={index}>
-          <a onClick={this.scrollToHeader(link.element)} href={'#' + link.element.id}>{linkText}</a>
+          <a onClick={this.scrollToHeader(element)} href={'#' + element.id}>{linkText}</a>
           {link.childNodes.length > 0 ? (<ul style={{ listStyleType: listStyle }}>{this.renderLinks(link.childNodes, listStyle)}</ul>) : ''}
         </li>
       );
-    });
+    }).filter((element): element is JSX.Element => element !== null);
 
     return elements;
   }
@@ -332,7 +322,8 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * The component will display the correct list of headers on the first render and will be able to process clicks (as a link to an HTMLElement is stored by the component).
    * Once valid ids got assigned to headers by SharePoint code, the component will get valid ids for headers. This way a link from ToC can be copied by a user and it will be a valid link to a header.
    */
-  public componentDidMount() {
+  public componentDidMount(): void {
+    // this.interval = setInterval(() => {
     setInterval(() => {
       this.setState({});
     }, TableOfContents.timeout);
@@ -342,7 +333,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Event for the back to previous page link. 
    * It uses the history count to work out how many pages to go back, as each click to a header results in history
    */
-  public backToPreviousPage() {
+  public backToPreviousPage(): void {
     window.history.go(this.state.historyCount);
   }
 
@@ -359,32 +350,46 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Modify the CSS of the appropriate HTML elements based on the wepart ID to enable sticky mode.
    * This does involve modifying HTML elements outside of the webpart, so may well break in the furture if Microsoft change their HTML\CSS etc.
    */
-  private configureSticky() {
+  private configureSticky(): void {
 
-    const HTMLElementSticky: HTMLElement = document.querySelector("[id='" + this.props.webpartId + "']");
-    if (HTMLElementSticky != null) {
+    const HTMLElementSticky: HTMLElement | null = document.querySelector("[id='" + this.props.webpartId + "']");
+    if (HTMLElementSticky !== null) {
+      const parent = HTMLElementSticky.parentElement;
+      const grandParent = parent?.parentElement ?? null;
+      const greatGrandParent = grandParent?.parentElement ?? null;
+
       if (this.props.enableStickyMode && window.innerWidth > 1024) {
 
-        if (this.props.isEditMode){
-          HTMLElementSticky.parentElement.parentElement.style.position = "Sticky";
-          HTMLElementSticky.parentElement.parentElement.style.top = "0px";
-          HTMLElementSticky.parentElement.parentElement.parentElement.style.height = "100%";
+        if (this.props.isEditMode) {
+          if (grandParent && greatGrandParent) {
+            grandParent.style.position = "sticky";
+            grandParent.style.top = "0px";
+            greatGrandParent.style.height = "100%";
+          }
           console.log("Edit Mode");
         }
         else {
-          HTMLElementSticky.style.position = "Sticky";
+          HTMLElementSticky.style.position = "sticky";
           HTMLElementSticky.style.top = "0px";
-          HTMLElementSticky.parentElement.style.height = "100%";
+          if (parent) {
+            parent.style.height = "100%";
+          }
           console.log("Normal Mode");
         }
       }
       else {
         HTMLElementSticky.style.position = "";
         HTMLElementSticky.style.top = "";
-        HTMLElementSticky.parentElement.style.height = "";
-        HTMLElementSticky.parentElement.parentElement.style.position = "";
-        HTMLElementSticky.parentElement.parentElement.style.top = "";
-        HTMLElementSticky.parentElement.parentElement.parentElement.style.height = "";
+        if (parent) {
+          parent.style.height = "";
+        }
+        if (grandParent) {
+          grandParent.style.position = "";
+          grandParent.style.top = "";
+        }
+        if (greatGrandParent) {
+          greatGrandParent.style.height = "";
+        }
       }
     }
   }

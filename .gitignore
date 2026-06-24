@@ -10,8 +10,15 @@ release
 # Build generated files
 dist
 lib
+lib-dts
+lib-commonjs
+lib-esm
+jest-output
+release
 solution
 temp
+*.sppkg
+.heft
 
 # Coverage directory used by tools like istanbul
 coverage
@@ -30,8 +37,6 @@ obj
 
 # Styles Generated Code
 *.scss.ts
-
-.heft
 
 # Upgrade Reports
 upgrade-report.md
