@@ -32,6 +32,7 @@ export interface ITableOfContentsWebPartProps {
   showHeading2: boolean;
   showHeading3: boolean;
   showHeading4: boolean;
+  showHeading5: boolean;
   showPreviousPageLinkTitle: boolean;
   showPreviousPageLinkAbove: boolean;
   showPreviousPageLinkBelow: boolean;
@@ -45,7 +46,7 @@ export interface ITableOfContentsWebPartProps {
 
 export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITableOfContentsWebPartProps> {
 
-  private _themeProvider: ThemeProvider;
+  private _themeProvider!: ThemeProvider;
   private _themeVariant: IReadonlyTheme | undefined;
 
   protected onInit(): Promise<void> {
@@ -53,7 +54,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
     this._themeProvider = this.context.serviceScope.consume(ThemeProvider.serviceKey);
     // If it exists, get the theme variant
     this._themeVariant = this._themeProvider.tryGetTheme();
-    this.setCSSVariables(this._themeVariant.semanticColors);
+    this.setCSSVariables(this._themeVariant?.semanticColors ?? null);
     // Register a handler to be notified if the theme variant changes
     this._themeProvider.themeChangedEvent.add(this, this._handleThemeChangedEvent);
     // return super.onInit()
@@ -65,7 +66,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
     });
   }
 
-  private setCSSVariables(theming: Record<string, string> | null): void {
+  private setCSSVariables(theming: Record<string, string> | null | undefined): void {
     if (!theming) return;
     Object.keys(theming).forEach(key => {
       this.domElement.style.setProperty(`--${key}`, theming[key]);
@@ -80,7 +81,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
  */
   private _handleThemeChangedEvent(args: ThemeChangedEventArgs): void {
     this._themeVariant = args.theme;
-    this.setCSSVariables(this._themeVariant.semanticColors);
+    this.setCSSVariables(this._themeVariant?.semanticColors ?? null);
     this.render();
   }
 
@@ -97,10 +98,11 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
         searchMarkdown: this.properties.searchMarkdown,
         searchCollapsible: this.properties.searchCollapsible,
 
-        showHeading2: this.properties.showHeading1,
-        showHeading3: this.properties.showHeading2,
-        showHeading4: this.properties.showHeading3,
-        showHeading5: this.properties.showHeading4,
+        showHeading1: this.properties.showHeading1,
+        showHeading2: this.properties.showHeading2,
+        showHeading3: this.properties.showHeading3,
+        showHeading4: this.properties.showHeading4,
+        showHeading5: this.properties.showHeading5,
 
         showPreviousPageLinkTitle: this.properties.showPreviousPageLinkTitle,
         showPreviousPageLinkAbove: this.properties.showPreviousPageLinkAbove,
@@ -113,7 +115,7 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
         hideInMobileView: this.properties.hideInMobileView,
 
         listStyle: this.properties.listStyle,
-        isEditMode: this.displayMode == DisplayMode.Edit,
+        isEditMode: this.displayMode === DisplayMode.Edit,
       }
     );
 
@@ -136,20 +138,20 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    let showHeading4: any;
+    // let showHeading4: any;
     let showPreviousPageLinkTitle: any;
 
-    if (this.properties.searchMarkdown) {
-      showHeading4 = PropertyPaneCheckbox('showHeading4', {
-        text: strings.showHeading4FieldLabel
-      })
-    }
-    else {
-      showHeading4 = PropertyPaneCheckbox('showHeading4', {
-        text: strings.showHeading4FieldLabel,
-        disabled: true
-      });
-    }
+    // if (this.properties.searchMarkdown) {
+    //   showHeading4 = PropertyPaneCheckbox('showHeading4', {
+    //     text: strings.showHeading4FieldLabel
+    //   })
+    // }
+    // else {
+    //   showHeading4 = PropertyPaneCheckbox('showHeading4', {
+    //     text: strings.showHeading4FieldLabel,
+    //     disabled: true
+    //   });
+    // }
 
     if (this.properties.hideTitle) {
       showPreviousPageLinkTitle = PropertyPaneCheckbox('showPreviousPageLinkTitle', {
@@ -214,7 +216,10 @@ export default class TableOfContentsWebPart extends BaseClientSideWebPart<ITable
                 PropertyPaneCheckbox('showHeading3', {
                   text: strings.showHeading3FieldLabel
                 }),
-                showHeading4,
+                PropertyPaneCheckbox('showHeading4', {
+                  text: strings.showHeading4FieldLabel
+                }),
+                // showHeading4,
                 PropertyPaneDropdown('listStyle', {
                   label: strings.listStyle,
                   options: [

@@ -1,6 +1,6 @@
 {
   "name": "table-of-contents",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "private": true,
   "engines": {
     "node": ">=22.14.0 < 23.0.0"
@@ -9,7 +9,11 @@
     "build": "heft test --clean --production && heft package-solution --production",
     "clean": "heft clean",
     "eject-webpack": "heft eject-webpack",
-    "start": "heft start --clean"
+    "start": "heft start --clean",
+    "bump:major": "node ./tools/bump-version.js major",
+    "bump:minor": "node ./tools/bump-version.js minor",
+    "bump:patch": "node ./tools/bump-version.js patch",
+    "bump:sync": "node ./tools/bump-version.js sync"
   },
   "dependencies": {
     "tslib": "2.3.1",

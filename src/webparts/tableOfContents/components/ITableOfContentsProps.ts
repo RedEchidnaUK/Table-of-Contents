@@ -9,6 +9,7 @@ export interface ITableOfContentsProps {
   searchMarkdown: boolean;
   searchCollapsible: boolean;
 
+  showHeading1: boolean;
   showHeading2: boolean;
   showHeading3: boolean;
   showHeading4: boolean;

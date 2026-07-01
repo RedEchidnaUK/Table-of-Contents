@@ -26,6 +26,7 @@ interface Link {
 export default class TableOfContents extends React.Component<ITableOfContentsProps, ITableOfContentsState> {
   private static timeout = 500;
 
+  private static h1Tag = "h1";
   private static h2Tag = "h2";
   private static h3Tag = "h3";
   private static h4Tag = "h4";
@@ -46,7 +47,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
    * Gets a nested list of links based on the list of headers specified.
    * @param headers List of HtmlElements for H2, H3, and H4 headers.
    */
-private getLinks(headers: HTMLElement[]): Link[] {
+  private getLinks(headers: HTMLElement[]): Link[] {
     // create a root link that will be a root for links' tree
     const root: Link = { childNodes: [], parent: undefined, element: undefined };
 
@@ -62,11 +63,35 @@ private getLinks(headers: HTMLElement[]): Link[] {
         root.childNodes.push(link);
       } else {
         const prevHeader = headers[i - 1];
+        const normalizedHeader = this.normalizeHeaderTag(header);
+        const normalizedPrevHeader = this.normalizeHeaderTag(prevHeader);
 
+        // compare the current header and the previous one to define where to add new link
+        const compare = this.compareHeaders(normalizedHeader, normalizedPrevHeader);
+
+        if (compare === 0) {
+          // if headers are on the same level, add header to the same parent
+          link.parent = prevLink!.parent!;
+          prevLink!.parent!.childNodes.push(link);
+        } else if (compare < 0) {
+
+          // start from the previous link's parent (may be undefined)
+          let targetParent: Link | undefined = prevLink!.parent;
+          // if current header is bigger than the previous one, go up in the hierarchy to find a place to add link
+          // go up in the hierarchy of links until a link with bigger tag is found or until the root link found
+          // i.e. for H4 look for H3 or H2, for H3 look for H2, for H2 look for the root.
+          while (targetParent && (targetParent !== root) && (this.compareHeaders(normalizedHeader, this.normalizeHeaderTag(targetParent.element!)) <= 0)) {
+            targetParent = targetParent.parent;
+          }
+
+          // if no suitable parent found, attach to root
+          link.parent = targetParent || root;
+          (link.parent).childNodes.push(link);
+        } else {
           // if current header is smaller than the previous one, add link for it as a child of the previous link
           link.parent = prevLink!;
           prevLink!.childNodes.push(link);
-        
+        }
       }
 
       prevLink = link;
@@ -92,6 +117,8 @@ private getLinks(headers: HTMLElement[]): Link[] {
    */
   private getHeaderWeight(header: string): number {
     switch (header.toLowerCase()) {
+      case (TableOfContents.h1Tag):
+        return 1;
       case (TableOfContents.h2Tag):
         return 2;
       case (TableOfContents.h3Tag):
@@ -103,6 +130,64 @@ private getLinks(headers: HTMLElement[]): Link[] {
       default:
         throw new Error('Unknown header: ' + header);
     }
+  }
+
+  /**
+   * Normalize markdown headings so the markdown webpart H2 maps to H1, H3 to H2, etc.
+   */
+  private normalizeHeaderTag(element: HTMLElement): string {
+    const tag = element.tagName.toLowerCase();
+
+    if (this.isCollapsibleHeader(element) && tag === TableOfContents.h2Tag) {
+      return TableOfContents.h1Tag;
+    }
+
+    if (!this.isMarkdownHeader(element)) {
+      return tag;
+    }
+
+    switch (tag) {
+      case TableOfContents.h2Tag:
+        return TableOfContents.h1Tag;
+      case TableOfContents.h3Tag:
+        return TableOfContents.h2Tag;
+      case TableOfContents.h4Tag:
+        return TableOfContents.h3Tag;
+      case TableOfContents.h5Tag:
+        return TableOfContents.h4Tag;
+      default:
+        return tag;
+    }
+  }
+
+  /**
+   * Returns true when the element is inside a markdown webpart container.
+   */
+  private isMarkdownHeader(element: HTMLElement): boolean {
+    let parent = element.parentElement;
+    while (parent) {
+      const featureTag = parent.getAttribute('data-sp-feature-tag');
+      if (featureTag && featureTag.indexOf('Markdown') !== -1) {
+        return true;
+      }
+      parent = parent.parentElement;
+    }
+    return false;
+  }
+
+  /**
+   * Returns true when the element belongs to a collapsible section heading.
+   */
+  private isCollapsibleHeader(element: HTMLElement): boolean {
+    let current: HTMLElement | null = element;
+    while (current) {
+      const automationId = current.getAttribute('data-automation-id');
+      if (automationId && (automationId.indexOf('CollapsibleLayer-Heading') !== -1 || automationId.indexOf('CollapsibleLayer-TitleInput') !== -1)) {
+        return true;
+      }
+      current = current.parentElement;
+    }
+    return false;
   }
 
   /**
@@ -122,14 +207,14 @@ private getLinks(headers: HTMLElement[]): Link[] {
       for (let i = 0; i < elements.length; i++) {
         const currentElement = elements[i] as HTMLElement;
 
-        // While in edit mode Section headers are not headers, but text areas. This converts them to H2 tags
-        if (elements[i].tagName === "TEXTAREA") {
-          const temp = document.createElement('h2')
-          temp.innerHTML = elements[i].innerHTML
-          htmlElements.push(temp)
-        }
-        else {
-          htmlElements.push(elements[i] as HTMLElement);
+        // While in edit mode Section headers are not headers, but text areas.
+        // This converts the collapsible section title input to an H1 tag.
+        if (currentElement.tagName === "TEXTAREA" && this.isCollapsibleHeader(currentElement)) {
+          const temp = document.createElement('h1');
+          temp.innerHTML = currentElement.innerHTML;
+          htmlElements.push(temp);
+        } else {
+          htmlElements.push(currentElement);
         }
 
       }
@@ -145,27 +230,36 @@ private getLinks(headers: HTMLElement[]): Link[] {
     const queryParts = [];
     const queryItems = [];
 
-    if (this.props.searchText) {
+    if (props.searchText) {
       queryItems.push('.cke_editable', '.ck-content');
     }
 
-    if (this.props.searchCollapsible) {
-      queryItems.push('[data-automation-id*="CanvasZone-SectionContainer"]');
+    if (props.searchCollapsible) {
+      queryItems.push('[data-automation-id*="CollapsibleLayer-Heading"]');
+      if (props.isEditMode) {
+        queryItems.push('[data-automation-id*="CollapsibleLayer-TitleInput"]');
+      }
     }
 
-    if (this.props.searchMarkdown) {
+    if (props.searchMarkdown) {
       queryItems.push('[data-sp-feature-tag*="Markdown"]');
     }
 
-    if (props.showHeading2) {
+    if (props.showHeading1) {
       for (let i = 0; i < queryItems.length; i++) {
 
         if (queryItems[i] === '[data-automation-id*="CollapsibleLayer-TitleInput"]') {
           queryParts.push(queryItems[i]);
         }
         else {
-          queryParts.push(queryItems[i] + " " + TableOfContents.h2Tag);
+          queryParts.push(queryItems[i] + " " + TableOfContents.h1Tag);
         }
+      }
+    }
+
+    if (props.showHeading2) {
+      for (let i = 0; i < queryItems.length; i++) {
+        queryParts.push(queryItems[i] + " " + TableOfContents.h2Tag);
       }
     }
 
@@ -330,7 +424,7 @@ private getLinks(headers: HTMLElement[]): Link[] {
   }
 
   /**
-   * Event for the back to previous page link. 
+   * Event for the back to previous page link.
    * It uses the history count to work out how many pages to go back, as each click to a header results in history
    */
   public backToPreviousPage(): void {
