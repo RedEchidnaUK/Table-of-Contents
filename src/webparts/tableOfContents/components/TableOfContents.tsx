@@ -254,30 +254,45 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
         else {
           queryParts.push(queryItems[i] + " " + TableOfContents.h1Tag);
         }
+        if (queryItems[i] === '[data-automation-id*="CollapsibleLayer-Heading"]') {
+          queryParts.push(TableOfContents.h1Tag + ":has(" + queryItems[i] + ")");
+        }
       }
     }
 
     if (props.showHeading2) {
       for (let i = 0; i < queryItems.length; i++) {
         queryParts.push(queryItems[i] + " " + TableOfContents.h2Tag);
+        if (queryItems[i] === '[data-automation-id*="CollapsibleLayer-Heading"]') {
+          queryParts.push(TableOfContents.h2Tag + ":has(" + queryItems[i] + ")");
+        }
       }
     }
 
     if (props.showHeading3) {
       for (let i = 0; i < queryItems.length; i++) {
         queryParts.push(queryItems[i] + " " + TableOfContents.h3Tag);
+        if (queryItems[i] === '[data-automation-id*="CollapsibleLayer-Heading"]') {
+          queryParts.push(TableOfContents.h3Tag + ":has(" + queryItems[i] + ")");
+        }
       }
     }
 
     if (props.showHeading4) {
       for (let i = 0; i < queryItems.length; i++) {
         queryParts.push(queryItems[i] + " " + TableOfContents.h4Tag);
+        if (queryItems[i] === '[data-automation-id*="CollapsibleLayer-Heading"]') {
+          queryParts.push(TableOfContents.h4Tag + ":has(" + queryItems[i] + ")");
+        }
       }
     }
 
     if (props.showHeading5) {
       for (let i = 0; i < queryItems.length; i++) {
         queryParts.push(queryItems[i] + " " + TableOfContents.h5Tag);
+        if (queryItems[i] === '[data-automation-id*="CollapsibleLayer-Heading"]') {
+          queryParts.push(TableOfContents.h5Tag + ":has(" + queryItems[i] + ")");
+        }
       }
     }
 
@@ -381,6 +396,7 @@ export default class TableOfContents extends React.Component<ITableOfContentsPro
 
       const element = link.element;
       let linkText = element.innerText;
+      linkText = linkText.replace(/^[]\s*/, ''); // remove the 'Collapse' icon from the link text
       const regex = /title="Permalink for ([^"]+)"/;
 
       // If linkText is empty, extract the text from the 'Permalink'
